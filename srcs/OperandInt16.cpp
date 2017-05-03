@@ -6,13 +6,13 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 11:55:23 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/03 18:27:04 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/03 20:06:48 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "OperandInt16.hpp"
 
-OperandInt16::OperandInt16(void) : _value(0)
+OperandInt16::OperandInt16(void) : _value(0), _str_value("0")
 {
 }
 
@@ -20,18 +20,20 @@ OperandInt16::~OperandInt16(void)
 {
 }
 
-OperandInt16::OperandInt16(OperandInt16 const &src) : _value(src.getValue())
+OperandInt16::OperandInt16(OperandInt16 const &src) : _value(src.getValue()), _str_value(src.toString())
 {
 }
 
 OperandInt16			&OperandInt16::operator=(OperandInt16 const &rhs)
 {
 	this->_value = rhs.getValue();
+	this->_str_value = rhs.toString().c_str();
 	return(*this);
 }
 
 OperandInt16::OperandInt16(short int const value) : _value(value)
 {
+	this->_str_value = std::to_string(static_cast<int>(value));
 }
 
 int						OperandInt16::getPrecision(void) const
@@ -46,7 +48,7 @@ eOperandType			OperandInt16::getType(void) const
 
 short int				OperandInt16::getValue(void) const
 {
-	return (_value);
+	return (this->_value);
 }
 
 IOperand const			*OperandInt16::operator+(IOperand const &rhs) const
@@ -83,4 +85,9 @@ IOperand const			*OperandInt16::operator-(IOperand const &rhs) const
 	result = this->_value + dynamic_cast<const OperandInt16 &>(rhs).getValue();
 	op_result = new OperandInt16(result);
 	return (op_result);
+}
+
+std::string const		&OperandInt16::toString(void) const
+{
+	return (this->_str_value);
 }
