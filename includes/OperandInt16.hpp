@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 10:17:28 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/03 14:39:53 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/03 18:22:20 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 class OperandInt16 : public IOperand
 {
 	public :
+
 		OperandInt16(void);
 		virtual ~OperandInt16(void);
 		OperandInt16(OperandInt16 const &src);
@@ -31,12 +32,12 @@ class OperandInt16 : public IOperand
 		short int							getValue(void) const;
 
 		virtual IOperand const				*operator+(IOperand const &rhs) const;
-/*		virtual OperandInt16 const			*operator-(OperandInt16 const &rhs) const;
-		virtual OperandInt16 const			*operator*(OperandInt16 const &rhs) const;
-		virtual OperandInt16 const			*operator/(OperandInt16 const &rhs) const;
-		virtual OperandInt16 const			*operator%(OperandInt16 const &rhs) const;
+		virtual IOperand const				*operator-(IOperand const &rhs) const;
+/*		virtual IOperand const				*operator*(IOperand const &rhs) const;
+		virtual IOperand const				*operator/(IOperand const &rhs) const;
+		virtual IOperand const				*operator(IOperand const &rhs) const;
 
-		virtual std::string const			&toString(void) const;*/
+//		virtual std::string const			&toString(void) const;*/
 
 	private :
 		short int							_value;

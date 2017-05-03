@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 11:55:23 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/03 14:46:39 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/03 18:27:04 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,18 +54,32 @@ IOperand const			*OperandInt16::operator+(IOperand const &rhs) const
 	short int		result;
 	IOperand		*op_result;
 
-	if (dynamic_cast<const OperandInt16 &>(rhs).getValue() == 0)
-		return (this);
-	else if (dynamic_cast<const OperandInt16 &>(rhs).getValue() > 0 &&
+	if (dynamic_cast<const OperandInt16 &>(rhs).getValue() > 0 &&
 			(this->_value > (std::numeric_limits<short int>::max() -
 			dynamic_cast<const OperandInt16 &>(rhs).getValue())))
-//		throw OperandInt16::OverflowException();
-		throw std::exception();
+		throw std::overflow_error("Addition would case an overflow");
 	else if (dynamic_cast<const OperandInt16 &>(rhs).getValue() < 0 &&
 			(this->_value < (std::numeric_limits<short int>::min() -
 			dynamic_cast<const OperandInt16 &>(rhs).getValue())))
-//		throw OperandInt16::UnderflowException();
-		throw std::exception();
+		throw std::overflow_error("Addition would case an underflow");
+	result = this->_value + dynamic_cast<const OperandInt16 &>(rhs).getValue();
+	op_result = new OperandInt16(result);
+	return (op_result);
+}
+
+IOperand const			*OperandInt16::operator-(IOperand const &rhs) const
+{
+	short int		result;
+	IOperand		*op_result;
+
+	if (dynamic_cast<const OperandInt16 &>(rhs).getValue() < 0 &&
+			(this->_value > (std::numeric_limits<short int>::max() +
+			dynamic_cast<const OperandInt16 &>(rhs).getValue())))
+		throw std::overflow_error("Subtraction would case an overflow");
+	else if (dynamic_cast<const OperandInt16 &>(rhs).getValue() > 0 &&
+			(this->_value < (std::numeric_limits<short int>::min() +
+			dynamic_cast<const OperandInt16 &>(rhs).getValue())))
+		throw std::underflow_error("Subtraction would case an underflow");
 	result = this->_value + dynamic_cast<const OperandInt16 &>(rhs).getValue();
 	op_result = new OperandInt16(result);
 	return (op_result);
