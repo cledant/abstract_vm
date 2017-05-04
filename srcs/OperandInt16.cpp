@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 11:55:23 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/04 14:11:55 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/04 14:41:43 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 OperandInt16::OperandInt16(void) : _value(0), _str_value("0")
 {
+	this->_factory = new OperandFactory();
 }
 
 OperandInt16::~OperandInt16(void)
@@ -22,6 +23,7 @@ OperandInt16::~OperandInt16(void)
 
 OperandInt16::OperandInt16(OperandInt16 const &src) : _value(src.getValue()), _str_value(src.toString())
 {
+	this->_factory = new OperandFactory();
 }
 
 OperandInt16			&OperandInt16::operator=(OperandInt16 const &rhs)
@@ -33,6 +35,7 @@ OperandInt16			&OperandInt16::operator=(OperandInt16 const &rhs)
 
 OperandInt16::OperandInt16(short int const value) : _value(value)
 {
+	this->_factory = new OperandFactory();
 	this->_str_value = std::to_string(static_cast<int>(value));
 }
 
@@ -53,8 +56,8 @@ short int				OperandInt16::getValue(void) const
 
 IOperand const			*OperandInt16::operator+(IOperand const &rhs) const
 {
-	short int		result;
-	IOperand		*op_result;
+	short int			result;
+	const IOperand		*op_result;
 
 	if (dynamic_cast<const OperandInt16 &>(rhs).getValue() > 0 &&
 			(this->_value > (std::numeric_limits<short int>::max() -
@@ -65,14 +68,15 @@ IOperand const			*OperandInt16::operator+(IOperand const &rhs) const
 			dynamic_cast<const OperandInt16 &>(rhs).getValue())))
 		throw std::overflow_error("Addition would case an underflow");
 	result = this->_value + dynamic_cast<const OperandInt16 &>(rhs).getValue();
-	op_result = new OperandInt16(result);
+	op_result = this->_factory->createOperand(Int16,
+		std::to_string(static_cast<int>(result)));
 	return (op_result);
 }
-/*
+
 IOperand const			*OperandInt16::operator-(IOperand const &rhs) const
 {
-	short int		result;
-	IOperand		*op_result;
+	short int			result;
+	const IOperand		*op_result;
 
 	if (dynamic_cast<const OperandInt16 &>(rhs).getValue() < 0 &&
 			(this->_value > (std::numeric_limits<short int>::max() +
@@ -83,9 +87,10 @@ IOperand const			*OperandInt16::operator-(IOperand const &rhs) const
 			dynamic_cast<const OperandInt16 &>(rhs).getValue())))
 		throw std::underflow_error("Subtraction would case an underflow");
 	result = this->_value + dynamic_cast<const OperandInt16 &>(rhs).getValue();
-	op_result = new OperandInt16(result);
+	op_result = this->_factory->createOperand(Int16,
+		std::to_string(static_cast<int>(result)));
 	return (op_result);
-}*/
+}
 
 std::string const		&OperandInt16::toString(void) const
 {

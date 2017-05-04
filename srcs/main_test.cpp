@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 14:04:53 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/03 20:06:20 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/04 14:18:26 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int		main(void)
 {
-	OperandFactory			*factory = new OperandFactory();
+	AFactory				*factory = new OperandFactory();
 	const IOperand			*a = nullptr;
 	const IOperand			*b = nullptr;
 	const IOperand 			*c = nullptr;

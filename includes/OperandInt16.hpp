@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 10:17:28 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/04 14:12:03 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/04 14:40:49 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <limits>
 # include "IOperand.hpp"
+# include "OperandFactory.hpp"
 
 class OperandInt16 : public IOperand
 {
@@ -32,8 +33,8 @@ class OperandInt16 : public IOperand
 		short int							getValue(void) const;
 
 		virtual IOperand const				*operator+(IOperand const &rhs) const;
-/*		virtual IOperand const				*operator-(IOperand const &rhs) const;
-		virtual IOperand const				*operator*(IOperand const &rhs) const;
+		virtual IOperand const				*operator-(IOperand const &rhs) const;
+/*		virtual IOperand const				*operator*(IOperand const &rhs) const;
 		virtual IOperand const				*operator/(IOperand const &rhs) const;
 		virtual IOperand const				*operator%(IOperand const &rhs) const;*/
 
@@ -41,6 +42,7 @@ class OperandInt16 : public IOperand
 
 	private :
 
+		AFactory							*_factory;
 		short int							_value;
 		std::string							_str_value;
 };
