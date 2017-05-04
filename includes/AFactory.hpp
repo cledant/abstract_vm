@@ -6,21 +6,27 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 17:17:55 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/03 18:28:58 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/04 14:15:19 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef IFACTORY_HPP
-# define IFACTORY_HPP
+#ifndef AFACTORY_HPP
+# define AFACTORY_HPP
 
 #include <string>
-#include "IOperand.hpp"
+#include "abstract_vm_defines.hpp"
 
-class IFactory
+class IOperand;
+
+class AFactory
 {
 	public :
 
-		virtual ~IFactory(void) {}
+		AFactory(void);
+		virtual ~AFactory(void);
+
+		IOperand const		*createOperand(eOperandType type,
+								std::string const &value) const;
 
 	private :
 

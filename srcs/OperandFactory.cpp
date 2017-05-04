@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 17:23:40 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/03 18:33:28 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/04 14:11:51 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,32 +18,6 @@ OperandFactory::OperandFactory(void)
 
 OperandFactory::~OperandFactory(void)
 {
-}
-
-IOperand const		*OperandFactory::createOperand(eOperandType type,
-						std::string const &value) const
-{
-	const IOperand *op = nullptr;
-
-	switch (type)
-	{
-		case Int8 :
-			op = this->createInt16(value);
-			break ;
-		case Int16 :
-			op = this->createInt16(value);
-			break ;
-		case Int32 :
-			op = this->createInt16(value);
-			break ;
-		case Float :
-			op = this->createInt16(value);
-			break ;
-		case Double :
-			op = this->createInt16(value);
-			break ;
-	}
-	return (op);
 }
 
 IOperand const		*OperandFactory::createInt16(std::string const &value) const

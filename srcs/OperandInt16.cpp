@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 11:55:23 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/03 20:06:48 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/04 14:11:55 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ IOperand const			*OperandInt16::operator+(IOperand const &rhs) const
 	op_result = new OperandInt16(result);
 	return (op_result);
 }
-
+/*
 IOperand const			*OperandInt16::operator-(IOperand const &rhs) const
 {
 	short int		result;
@@ -85,7 +85,7 @@ IOperand const			*OperandInt16::operator-(IOperand const &rhs) const
 	result = this->_value + dynamic_cast<const OperandInt16 &>(rhs).getValue();
 	op_result = new OperandInt16(result);
 	return (op_result);
-}
+}*/
 
 std::string const		&OperandInt16::toString(void) const
 {

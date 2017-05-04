@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 10:17:28 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/03 20:03:08 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/04 14:12:03 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ class OperandInt16 : public IOperand
 		short int							getValue(void) const;
 
 		virtual IOperand const				*operator+(IOperand const &rhs) const;
-		virtual IOperand const				*operator-(IOperand const &rhs) const;
-/*		virtual IOperand const				*operator*(IOperand const &rhs) const;
+/*		virtual IOperand const				*operator-(IOperand const &rhs) const;
+		virtual IOperand const				*operator*(IOperand const &rhs) const;
 		virtual IOperand const				*operator/(IOperand const &rhs) const;
 		virtual IOperand const				*operator%(IOperand const &rhs) const;*/
 
