@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 10:17:28 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/04 17:22:42 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/04 18:03:55 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ class OperandInt16 : public IOperand
 		virtual IOperand const				*operator-(IOperand const &rhs) const;
 		virtual IOperand const				*operator*(IOperand const &rhs) const;
 		virtual IOperand const				*operator/(IOperand const &rhs) const;
-/*		virtual IOperand const				*operator%(IOperand const &rhs) const;*/
+		virtual IOperand const				*operator%(IOperand const &rhs) const;
 
 		virtual std::string const			&toString(void) const;
 

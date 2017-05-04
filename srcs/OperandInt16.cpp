@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 11:55:23 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/04 17:37:04 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/04 18:14:53 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,27 @@ IOperand const			*OperandInt16::operator/(IOperand const &rhs) const
 			this->_value == std::numeric_limits<short int>::min())
 		throw std::overflow_error("Division would cause an overflow");
 	result = this->_value / dynamic_cast<const OperandInt16 &>(rhs).getValue();
+	op_result = this->_factory->createOperand(Int16,
+		std::to_string(static_cast<int>(result)));
+	return (op_result);
+}
+
+IOperand const			*OperandInt16::operator%(IOperand const &rhs) const
+{
+	short int			result;
+	const IOperand		*op_result;
+
+	if (dynamic_cast<const OperandInt16 &>(rhs).getValue() == 0)
+		throw std::logic_error("Modulo can't divide by zero");
+	else if (this->getValue() == 0)
+	{
+		op_result = this->_factory->createOperand(Int16, "0");
+		return (op_result);
+	}
+	else if (dynamic_cast<const OperandInt16 &>(rhs).getValue() == -1 &&
+			this->_value == std::numeric_limits<short int>::min())
+		throw std::overflow_error("Modulo would cause an overflow");
+	result = this->_value % dynamic_cast<const OperandInt16 &>(rhs).getValue();
 	op_result = this->_factory->createOperand(Int16,
 		std::to_string(static_cast<int>(result)));
 	return (op_result);
