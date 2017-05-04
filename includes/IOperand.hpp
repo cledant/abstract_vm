@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 09:43:07 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/04 14:11:59 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/04 16:18:45 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ class IOperand
 		virtual eOperandType		getType(void) const = 0;
 
 		virtual IOperand const		*operator+(IOperand const &rhs) const = 0;
-/*		virtual IOperand const		*operator-(IOperand const &rhs) const = 0;
-		virtual IOperand const		*operator*(IOperand const &rhs) const = 0;
+		virtual IOperand const		*operator-(IOperand const &rhs) const = 0;
+/*		virtual IOperand const		*operator*(IOperand const &rhs) const = 0;
 		virtual IOperand const		*operator/(IOperand const &rhs) const = 0;
 		virtual IOperand const		*operator%(IOperand const &rhs) const = 0;*/
 

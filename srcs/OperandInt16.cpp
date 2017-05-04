@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 11:55:23 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/04 15:53:48 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/04 16:19:38 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ IOperand const			*OperandInt16::operator-(IOperand const &rhs) const
 			(this->_value < (std::numeric_limits<short int>::min() +
 			dynamic_cast<const OperandInt16 &>(rhs).getValue())))
 		throw std::underflow_error("Subtraction would case an underflow");
-	result = this->_value + dynamic_cast<const OperandInt16 &>(rhs).getValue();
+	result = this->_value - dynamic_cast<const OperandInt16 &>(rhs).getValue();
 	op_result = this->_factory->createOperand(Int16,
 		std::to_string(static_cast<int>(result)));
 	return (op_result);
