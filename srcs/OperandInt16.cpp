@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 11:55:23 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/04 14:41:43 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/04 15:53:48 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ OperandInt16::OperandInt16(void) : _value(0), _str_value("0")
 
 OperandInt16::~OperandInt16(void)
 {
+	delete this->_factory;
 }
 
 OperandInt16::OperandInt16(OperandInt16 const &src) : _value(src.getValue()), _str_value(src.toString())
