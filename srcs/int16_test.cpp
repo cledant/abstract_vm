@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 14:04:53 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/04 16:31:18 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/04 17:15:18 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,6 +208,121 @@ void	out_of_bound_creation_test(void)
 	std::cout << std::endl;
 }
 
+void	multiplication_test(void)
+{
+	AFactory				*factory = new OperandFactory();
+	const IOperand			*a1 = nullptr;
+	const IOperand			*a2 = nullptr;
+	const IOperand 			*a3 = nullptr;
+
+	std::cout << "===Test on Multiplication===" << std::endl;
+	//Multiplication test
+
+	//Simple test
+	a1 = factory->createOperand(Int16, "10");
+	a2 = factory->createOperand(Int16, "30");
+	a3 = *a1 * *a2;
+	std::cout << "a1 : " << dynamic_cast<const OperandInt16 *>(a1)->toString() << std::endl;
+	std::cout << "a2 : " << dynamic_cast<const OperandInt16 *>(a2)->toString() << std::endl;
+	std::cout << "multiplication test 1: " << dynamic_cast<const OperandInt16 *>(a3)->toString() << std::endl << "===========" << std::endl;
+	delete a1;
+	delete a2;
+	delete a3;
+
+	//Negative number test
+	a1 = factory->createOperand(Int16, "-10");
+	a2 = factory->createOperand(Int16, "30");
+	a3 = *a1 * *a2;
+	std::cout << "a1 : " << dynamic_cast<const OperandInt16 *>(a1)->toString() << std::endl;
+	std::cout << "a2 : " << dynamic_cast<const OperandInt16 *>(a2)->toString() << std::endl;
+	std::cout << "multiplication test 2: " << dynamic_cast<const OperandInt16 *>(a3)->toString() << std::endl << "===========" << std::endl;
+	delete a1;
+	delete a2;
+	delete a3;
+
+	//Exception raising test1
+	try
+	{
+		a1 = factory->createOperand(Int16, "2");
+		a2 = factory->createOperand(Int16, "30000");
+		a3 = *a1 * *a2;
+		std::cout << "a1 : " << dynamic_cast<const OperandInt16 *>(a1)->toString() << std::endl;
+		std::cout << "a2 : " << dynamic_cast<const OperandInt16 *>(a2)->toString() << std::endl;
+		std::cout << "multiplication test 3: " << dynamic_cast<const OperandInt16 *>(a3)->toString() << std::endl << "===========" << std::endl;
+		delete a1;
+		delete a2;
+		delete a3;
+	}
+	catch (std::exception &e)
+	{
+		delete a1;
+		delete a2;
+		std::cout << e.what() << std::endl << "===========" << std::endl;
+	}
+
+	//Exception raising test2
+	try
+	{
+		a1 = factory->createOperand(Int16, "-2");
+		a2 = factory->createOperand(Int16, "30000");
+		a3 = *a1 * *a2;
+		std::cout << "a1 : " << dynamic_cast<const OperandInt16 *>(a1)->toString() << std::endl;
+		std::cout << "a2 : " << dynamic_cast<const OperandInt16 *>(a2)->toString() << std::endl;
+		std::cout << "multiplication test 4: " << dynamic_cast<const OperandInt16 *>(a3)->toString() << std::endl << "===========" << std::endl;
+		delete a1;
+		delete a2;
+		delete a3;
+	}
+	catch (std::exception &e)
+	{
+		delete a1;
+		delete a2;
+		std::cout << e.what() << std::endl << "===========" << std::endl;
+	}
+
+	//Exception raising test3
+	try
+	{
+		a1 = factory->createOperand(Int16, "-1");
+		a2 = factory->createOperand(Int16, "-32768");
+		a3 = *a1 * *a2;
+		std::cout << "a1 : " << dynamic_cast<const OperandInt16 *>(a1)->toString() << std::endl;
+		std::cout << "a2 : " << dynamic_cast<const OperandInt16 *>(a2)->toString() << std::endl;
+		std::cout << "multiplication test 4: " << dynamic_cast<const OperandInt16 *>(a3)->toString() << std::endl << "===========" << std::endl;
+		delete a1;
+		delete a2;
+		delete a3;
+	}
+	catch (std::exception &e)
+	{
+		delete a1;
+		delete a2;
+		std::cout << e.what() << std::endl << "===========" << std::endl;
+	}
+
+	//Exception raising test4
+	try
+	{
+		a1 = factory->createOperand(Int16, "-32768");
+		a2 = factory->createOperand(Int16, "-1");
+		a3 = *a1 * *a2;
+		std::cout << "a1 : " << dynamic_cast<const OperandInt16 *>(a1)->toString() << std::endl;
+		std::cout << "a2 : " << dynamic_cast<const OperandInt16 *>(a2)->toString() << std::endl;
+		std::cout << "multiplication test 4: " << dynamic_cast<const OperandInt16 *>(a3)->toString() << std::endl << "===========" << std::endl;
+		delete a1;
+		delete a2;
+		delete a3;
+	}
+	catch (std::exception &e)
+	{
+		delete a1;
+		delete a2;
+		std::cout << e.what() << std::endl << "===========" << std::endl;
+	}
+	std::cout << std::endl;
+	delete factory;
+}
+
 int		main(void)
 {
 	std::cout << "Test on OperandInt16" << std::endl << std::endl;
@@ -215,6 +330,7 @@ int		main(void)
 	substraction_test();
 	assignation_test();
 	out_of_bound_creation_test();
+	multiplication_test();
 	while(1);
 	return (0);
 }
