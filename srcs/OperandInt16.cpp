@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 11:55:23 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/04 18:14:53 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/05 10:54:23 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,11 @@ IOperand const			*OperandInt16::operator+(IOperand const &rhs) const
 	if (dynamic_cast<const OperandInt16 &>(rhs).getValue() > 0 &&
 			(this->_value > (std::numeric_limits<short int>::max() -
 			dynamic_cast<const OperandInt16 &>(rhs).getValue())))
-		throw std::overflow_error("Addition would cause an overflow");
+		throw OperandInt16::OverflowException();
 	else if (dynamic_cast<const OperandInt16 &>(rhs).getValue() < 0 &&
 			(this->_value < (std::numeric_limits<short int>::min() -
 			dynamic_cast<const OperandInt16 &>(rhs).getValue())))
-		throw std::overflow_error("Addition would cause an underflow");
+		throw OperandInt16::UnderflowException();
 	result = this->_value + dynamic_cast<const OperandInt16 &>(rhs).getValue();
 	op_result = this->_factory->createOperand(Int16,
 		std::to_string(static_cast<int>(result)));
@@ -82,11 +82,11 @@ IOperand const			*OperandInt16::operator-(IOperand const &rhs) const
 	if (dynamic_cast<const OperandInt16 &>(rhs).getValue() < 0 &&
 			(this->_value > (std::numeric_limits<short int>::max() +
 			dynamic_cast<const OperandInt16 &>(rhs).getValue())))
-		throw std::overflow_error("Subtraction would cause an overflow");
+		throw OperandInt16::OverflowException();
 	else if (dynamic_cast<const OperandInt16 &>(rhs).getValue() > 0 &&
 			(this->_value < (std::numeric_limits<short int>::min() +
 			dynamic_cast<const OperandInt16 &>(rhs).getValue())))
-		throw std::underflow_error("Subtraction would cause an underflow");
+		throw OperandInt16::UnderflowException();
 	result = this->_value - dynamic_cast<const OperandInt16 &>(rhs).getValue();
 	op_result = this->_factory->createOperand(Int16,
 		std::to_string(static_cast<int>(result)));
@@ -106,16 +106,16 @@ IOperand const			*OperandInt16::operator*(IOperand const &rhs) const
 	}
 	else if (this->_value > (std::numeric_limits<short int>::max() /
 			dynamic_cast<const OperandInt16 &>(rhs).getValue()))
-		throw std::overflow_error("Multiplication would cause an overflow");
+		throw OperandInt16::OverflowException();
 	else if (this->_value == -1 && std::numeric_limits<short int>::min() ==
 			dynamic_cast<const OperandInt16 &>(rhs).getValue())
-		throw std::overflow_error("Multiplication would cause an overflow");
+		throw OperandInt16::OverflowException();
 	else if (dynamic_cast<const OperandInt16 &>(rhs).getValue() == -1 &&
 			this->_value == std::numeric_limits<short int>::min())
-		throw std::overflow_error("Multiplication would cause an overflow");
+		throw OperandInt16::OverflowException();
 	else if (this->_value < (std::numeric_limits<short int>::min() /
 			dynamic_cast<const OperandInt16 &>(rhs).getValue()))
-		throw std::underflow_error("Multiplication would cause an underflow");
+		throw OperandInt16::UnderflowException();
 	result = this->_value * dynamic_cast<const OperandInt16 &>(rhs).getValue();
 	op_result = this->_factory->createOperand(Int16,
 		std::to_string(static_cast<int>(result)));
@@ -128,7 +128,7 @@ IOperand const			*OperandInt16::operator/(IOperand const &rhs) const
 	const IOperand		*op_result;
 
 	if (dynamic_cast<const OperandInt16 &>(rhs).getValue() == 0)
-		throw std::logic_error("Division can't divide by zero");
+		throw OperandInt16::DivideByZeroException();
 	else if (this->getValue() == 0)
 	{
 		op_result = this->_factory->createOperand(Int16, "0");
@@ -136,7 +136,7 @@ IOperand const			*OperandInt16::operator/(IOperand const &rhs) const
 	}
 	else if (dynamic_cast<const OperandInt16 &>(rhs).getValue() == -1 &&
 			this->_value == std::numeric_limits<short int>::min())
-		throw std::overflow_error("Division would cause an overflow");
+		throw OperandInt16::OverflowException();
 	result = this->_value / dynamic_cast<const OperandInt16 &>(rhs).getValue();
 	op_result = this->_factory->createOperand(Int16,
 		std::to_string(static_cast<int>(result)));
@@ -149,7 +149,7 @@ IOperand const			*OperandInt16::operator%(IOperand const &rhs) const
 	const IOperand		*op_result;
 
 	if (dynamic_cast<const OperandInt16 &>(rhs).getValue() == 0)
-		throw std::logic_error("Modulo can't divide by zero");
+		throw OperandInt16::DivideByZeroException();
 	else if (this->getValue() == 0)
 	{
 		op_result = this->_factory->createOperand(Int16, "0");
@@ -157,7 +157,7 @@ IOperand const			*OperandInt16::operator%(IOperand const &rhs) const
 	}
 	else if (dynamic_cast<const OperandInt16 &>(rhs).getValue() == -1 &&
 			this->_value == std::numeric_limits<short int>::min())
-		throw std::overflow_error("Modulo would cause an overflow");
+		throw OperandInt16::OverflowException();
 	result = this->_value % dynamic_cast<const OperandInt16 &>(rhs).getValue();
 	op_result = this->_factory->createOperand(Int16,
 		std::to_string(static_cast<int>(result)));
@@ -167,4 +167,86 @@ IOperand const			*OperandInt16::operator%(IOperand const &rhs) const
 std::string const		&OperandInt16::toString(void) const
 {
 	return (this->_str_value);
+}
+
+OperandInt16::OverflowException::OverflowException(void)
+{
+	this->_msg = "This operation would cause an overflow !";
+}
+
+OperandInt16::OverflowException::~OverflowException(void) throw()
+{
+}
+
+OperandInt16::OverflowException::OverflowException(OverflowException const &src)
+{
+	this->_msg = src._msg.c_str();
+}
+
+OperandInt16::OverflowException		&OperandInt16::OverflowException::operator=(
+										OverflowException const &rhs)
+{	
+	this->_msg = rhs._msg.c_str();
+	return (*this);
+}
+
+const char						*OperandInt16::OverflowException::what(void)
+									const throw()
+{
+	return (this->_msg.c_str());
+}
+
+OperandInt16::UnderflowException::UnderflowException(void)
+{
+	this->_msg = "This operation would cause an underflow !";
+}
+
+OperandInt16::UnderflowException::~UnderflowException(void) throw()
+{
+}
+
+OperandInt16::UnderflowException::UnderflowException(UnderflowException const &src)
+{
+	this->_msg = src._msg.c_str();
+}
+
+OperandInt16::UnderflowException	&OperandInt16::UnderflowException::operator=(
+										UnderflowException const &rhs)
+{	
+	this->_msg = rhs._msg.c_str();
+	return (*this);
+}
+
+const char						*OperandInt16::UnderflowException::what(void)
+									const throw()
+{
+	return (this->_msg.c_str());
+}
+
+OperandInt16::DivideByZeroException::DivideByZeroException(void)
+{
+	this->_msg = "This operation would cause a division by zero !";
+}
+
+OperandInt16::DivideByZeroException::~DivideByZeroException(void) throw()
+{
+}
+
+OperandInt16::DivideByZeroException::DivideByZeroException(DivideByZeroException
+		const &src)
+{
+	this->_msg = src._msg.c_str();
+}
+
+OperandInt16::DivideByZeroException	&OperandInt16::DivideByZeroException::
+										operator=(DivideByZeroException const &rhs)
+{	
+	this->_msg = rhs._msg.c_str();
+	return (*this);
+}
+
+const char						*OperandInt16::DivideByZeroException::what(void)
+									const throw()
+{
+	return (this->_msg.c_str());
 }

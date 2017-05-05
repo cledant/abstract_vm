@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 17:23:40 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/04 14:11:51 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/05 10:03:22 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ IOperand const		*OperandFactory::createInt16(std::string const &value) const
 {
 	int			convert;
 
-	//Possiblement plus de check apres le parser
 	convert = std::stoi(value, nullptr);
 	if (convert > std::numeric_limits<short int>::max())
 		throw std::overflow_error("Creating this variable would cause an overflow");

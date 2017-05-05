@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 10:17:28 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/04 18:03:55 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/05 10:55:39 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,51 @@ class OperandInt16 : public IOperand
 		virtual IOperand const				*operator%(IOperand const &rhs) const;
 
 		virtual std::string const			&toString(void) const;
+
+		class	OverflowException : public std::exception
+		{
+			public :
+
+				explicit OverflowException(void);
+				virtual ~OverflowException(void) throw();
+				OverflowException(OverflowException const &src);
+				OverflowException &operator=(OverflowException const &rhs);
+				virtual const char		*what(void) const throw();
+
+			protected :
+
+				std::string		_msg;
+		};
+
+		class	UnderflowException : public std::exception
+		{
+			public :
+
+				explicit UnderflowException(void);
+				virtual ~UnderflowException(void) throw();
+				UnderflowException(UnderflowException const &src);
+				UnderflowException &operator=(UnderflowException const &rhs);
+				virtual const char		*what(void) const throw();
+
+			protected :
+
+				std::string		_msg;
+		};
+
+		class	DivideByZeroException : public std::exception
+		{
+			public :
+
+				explicit DivideByZeroException(void);
+				virtual ~DivideByZeroException(void) throw();
+				DivideByZeroException(DivideByZeroException const &src);
+				DivideByZeroException &operator=(DivideByZeroException const &rhs);
+				virtual const char		*what(void) const throw();
+
+			protected :
+
+				std::string		_msg;
+		};
 
 	private :
 
