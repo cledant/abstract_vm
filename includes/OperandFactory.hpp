@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 16:46:57 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/04 14:14:52 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/05 11:03:33 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,36 @@ class OperandFactory : public AFactory
 
 		OperandFactory(void);
 		virtual ~OperandFactory(void);
+
+		class	OverflowException : public std::exception
+		{
+			public :
+
+				explicit OverflowException(void);
+				virtual ~OverflowException(void) throw();
+				OverflowException(OverflowException const &src);
+				OverflowException &operator=(OverflowException const &rhs);
+				virtual const char		*what(void) const throw();
+
+			protected :
+
+				std::string		_msg;
+		};
+
+		class	UnderflowException : public std::exception
+		{
+			public :
+
+				explicit UnderflowException(void);
+				virtual ~UnderflowException(void) throw();
+				UnderflowException(UnderflowException const &src);
+				UnderflowException &operator=(UnderflowException const &rhs);
+				virtual const char		*what(void) const throw();
+
+			protected :
+
+				std::string		_msg;
+		};
 
 	private :
 
