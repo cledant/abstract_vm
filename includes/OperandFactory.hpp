@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 16:46:57 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/05 11:03:33 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/05 11:09:00 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ class OperandFactory : public AFactory
 		virtual IOperand const		*createInt16(std::string const &value) const;
 /*		virtual IOperand const		*createInt32(std::string const &value) const;
 		virtual IOperand const		*createFloat(std::string const &value) const;
-		virtual IOperand const		*createDouable(std::string const &value) const;*/
+		virtual IOperand const		*createDouble(std::string const &value) const;*/
 };
 
 #endif

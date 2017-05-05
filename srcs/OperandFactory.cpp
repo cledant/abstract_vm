@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 17:23:40 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/05 11:05:06 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/05 11:11:31 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ IOperand const		*OperandFactory::createInt16(std::string const &value) const
 
 	convert = std::stoi(value, nullptr);
 	if (convert > std::numeric_limits<short int>::max())
-		throw std::overflow_error("Creating this variable would cause an overflow");
+		throw OperandFactory::OverflowException();
 	else if (convert < std::numeric_limits<short int>::min())
-		throw std::underflow_error("Creating this variable would cause an underflow");
+		throw OperandFactory::UnderflowException();
 	return (new OperandInt16(static_cast<short int>(convert)));
 }
 
