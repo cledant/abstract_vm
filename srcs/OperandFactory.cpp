@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 17:23:40 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/05 11:11:31 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/05 17:12:35 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,14 @@ IOperand const		*OperandFactory::createInt16(std::string const &value) const
 	else if (convert < std::numeric_limits<short int>::min())
 		throw OperandFactory::UnderflowException();
 	return (new OperandInt16(static_cast<short int>(convert)));
+}
+
+IOperand const		*OperandFactory::createFloat(std::string const &value) const
+{
+	float		convert;
+
+	convert = std::stof(value, nullptr);
+	return (new OperandFloat(convert));
 }
 
 OperandFactory::OverflowException::OverflowException(void)
