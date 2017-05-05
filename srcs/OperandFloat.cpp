@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 11:55:23 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/05 18:54:06 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/05 19:36:41 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ IOperand const			*OperandFloat::operator+(IOperand const &rhs) const
 	int					fe;
 	const IOperand		*op_result;
 
-	std::fclearexcept(FE_ALL_EXCEPT);
+	std::feclearexcept(FE_ALL_EXCEPT);
 	result = this->_value + dynamic_cast<const OperandFloat &>(rhs).getValue();
 	fe = fetestexcept(FE_ALL_EXCEPT);
 	if (fe & FE_OVERFLOW)
@@ -76,7 +76,7 @@ IOperand const			*OperandFloat::operator-(IOperand const &rhs) const
 	int					fe;
 	const IOperand		*op_result;
 
-	std::fclearexcept(FE_ALL_EXCEPT);
+	std::feclearexcept(FE_ALL_EXCEPT);
 	result = this->_value - dynamic_cast<const OperandFloat &>(rhs).getValue();
 	fe = fetestexcept(FE_ALL_EXCEPT);
 	if (fe & FE_OVERFLOW)
@@ -97,7 +97,7 @@ IOperand const			*OperandFloat::operator*(IOperand const &rhs) const
 		op_result = this->_factory->createOperand(Float, "0");
 		return (op_result);
 	}
-	std::fclearexcept(FE_ALL_EXCEPT);
+	std::feclearexcept(FE_ALL_EXCEPT);
 	result = this->_value * dynamic_cast<const OperandFloat &>(rhs).getValue();
 	fe = fetestexcept(FE_ALL_EXCEPT);
 	if (fe & FE_OVERFLOW)
@@ -114,7 +114,7 @@ IOperand const			*OperandFloat::operator/(IOperand const &rhs) const
 	int					fe;
 	const IOperand		*op_result;
 
-	std::fclearexcept(FE_ALL_EXCEPT);
+	std::feclearexcept(FE_ALL_EXCEPT);
 	result = this->_value / dynamic_cast<const OperandFloat &>(rhs).getValue();
 	fe = fetestexcept(FE_ALL_EXCEPT);
 	if (fe & FE_OVERFLOW)
@@ -123,16 +123,19 @@ IOperand const			*OperandFloat::operator/(IOperand const &rhs) const
 		throw OperandFloat::UnderflowException();
 	else if (fe & FE_DIVBYZERO)
 		throw OperandFloat::DivideByZeroException();
+	else if (fe & FE_INVALID)
+		throw OperandFloat::DivideByZeroException();
 	op_result = this->_factory->createOperand(Float, std::to_string(result));
 	return (op_result);
 }
 
 IOperand const			*OperandFloat::operator%(IOperand const &rhs) const
 {
-	short int			result;
+	float				result;
+	int					fe;
 	const IOperand		*op_result;
 
-	std::fclearexcept(FE_ALL_EXCEPT);
+	std::feclearexcept(FE_ALL_EXCEPT);
 	result = std::fmod(this->_value, dynamic_cast<const OperandFloat &>(rhs).getValue());
 	fe = fetestexcept(FE_ALL_EXCEPT);
 	if (fe & FE_OVERFLOW)
