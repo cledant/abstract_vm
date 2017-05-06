@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 16:46:57 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/06 10:25:26 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/06 13:08:38 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <limits>
 # include "AFactory.hpp"
+# include "OperandInt8.hpp"
 # include "OperandInt16.hpp"
 # include "OperandFloat.hpp"
 # include "OperandDouble.hpp"
@@ -58,7 +59,7 @@ class OperandFactory : public AFactory
 
 	private :
 
-//		virtual IOperand const		*createInt8(std::string const &value) const;
+		virtual IOperand const		*createInt8(std::string const &value) const;
 		virtual IOperand const		*createInt16(std::string const &value) const;
 //		virtual IOperand const		*createInt32(std::string const &value) const;
 		virtual IOperand const		*createFloat(std::string const &value) const;

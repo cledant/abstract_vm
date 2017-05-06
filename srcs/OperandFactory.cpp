@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 17:23:40 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/06 10:24:10 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/06 13:11:21 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,18 @@ OperandFactory::OperandFactory(void)
 
 OperandFactory::~OperandFactory(void)
 {
+}
+
+IOperand const		*OperandFactory::createInt8(std::string const &value) const
+{
+	int			convert;
+
+	convert = std::stoi(value, nullptr);
+	if (convert > std::numeric_limits<char>::max())
+		throw OperandFactory::OverflowException();
+	else if (convert < std::numeric_limits<char>::min())
+		throw OperandFactory::UnderflowException();
+	return (new OperandInt8(static_cast<char>(convert)));
 }
 
 IOperand const		*OperandFactory::createInt16(std::string const &value) const
