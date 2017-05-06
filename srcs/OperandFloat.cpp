@@ -6,13 +6,13 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 11:55:23 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/05 19:36:41 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/06 10:34:53 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "OperandFloat.hpp"
 
-OperandFloat::OperandFloat(void) : _value(0), _str_value("0")
+OperandFloat::OperandFloat(void) : _value(0.f), _str_value("0")
 {
 	this->_factory = new OperandFactory();
 }

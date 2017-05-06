@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 17:23:40 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/05 12:35:17 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/06 10:43:25 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ IOperand const		*AFactory::createOperand(eOperandType type,
 			op = this->createFloat(value);
 			break ;
 		case Double :
-			op = this->createInt16(value);
+			op = this->createDouble(value);
 			break ;
 	}
 	return (op);
