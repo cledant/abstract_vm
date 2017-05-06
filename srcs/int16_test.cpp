@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 14:04:53 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/04 18:22:57 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/06 14:24:13 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,8 +123,8 @@ void	substraction_test(void)
 	//Exception raising test1
 	try
 	{
-		a1 = factory->createOperand(Int16, "10000");
-		a2 = factory->createOperand(Int16, "-30000");
+		a1 = factory->createOperand(Int16, "-30");
+		a2 = factory->createOperand(Int16, "-10");
 		a3 = *a1 - *a2;
 		std::cout << "a1 : " << dynamic_cast<const OperandInt16 *>(a1)->toString() << std::endl;
 		std::cout << "a2 : " << dynamic_cast<const OperandInt16 *>(a2)->toString() << std::endl;

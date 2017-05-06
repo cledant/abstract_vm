@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 17:23:40 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/06 13:11:21 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/06 13:54:27 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,18 @@ IOperand const		*OperandFactory::createInt16(std::string const &value) const
 	else if (convert < std::numeric_limits<short int>::min())
 		throw OperandFactory::UnderflowException();
 	return (new OperandInt16(static_cast<short int>(convert)));
+}
+
+IOperand const		*OperandFactory::createInt32(std::string const &value) const
+{
+	int			convert;
+
+	convert = std::stoi(value, nullptr);
+	if (convert > std::numeric_limits<int>::max())
+		throw OperandFactory::OverflowException();
+	else if (convert < std::numeric_limits<int>::min())
+		throw OperandFactory::UnderflowException();
+	return (new OperandInt32(convert));
 }
 
 IOperand const		*OperandFactory::createFloat(std::string const &value) const
