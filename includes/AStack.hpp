@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 12:38:57 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/08 17:40:38 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/08 18:03:49 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ class AStack
 
 		virtual void					push(eOperandType type,
 											std::string const &value) = 0;
-/*		void							pop(void) = 0;
-		void							dump(void) = 0;
-		void							assert(eOperandType type,
+//		void							pop(void) = 0;
+		virtual void					dump(void) = 0;
+/*		void							assert(eOperandType type,
 											std::string const &value) = 0;
 		void							dump(void) = 0;
 		void							assert(void) = 0;
