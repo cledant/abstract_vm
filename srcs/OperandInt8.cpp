@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 11:55:23 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/06 13:06:15 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/08 12:02:50 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,18 +104,32 @@ IOperand const			*OperandInt8::operator*(IOperand const &rhs) const
 		op_result = this->_factory->createOperand(Int8, "0");
 		return (op_result);
 	}
-	else if (this->_value > (std::numeric_limits<char>::max() /
-			dynamic_cast<const OperandInt8 &>(rhs).getValue()))
-		throw OperandInt8::OverflowException();
 	else if (this->_value == -1 && std::numeric_limits<char>::min() ==
 			dynamic_cast<const OperandInt8 &>(rhs).getValue())
 		throw OperandInt8::OverflowException();
 	else if (dynamic_cast<const OperandInt8 &>(rhs).getValue() == -1 &&
 			this->_value == std::numeric_limits<char>::min())
 		throw OperandInt8::OverflowException();
-	else if (this->_value < (std::numeric_limits<char>::min() /
+	else if (this->_value > 0 &&
+			dynamic_cast<const OperandInt8 &>(rhs).getValue() > 0 &&
+			this->_value > (std::numeric_limits<char>::max() /
 			dynamic_cast<const OperandInt8 &>(rhs).getValue()))
-		throw OperandInt8::UnderflowException();
+		throw OperandInt8::OverflowException();
+	else if (this->_value > 0 &&
+			dynamic_cast<const OperandInt8 &>(rhs).getValue() <= 0 &&
+			dynamic_cast<const OperandInt8 &>(rhs).getValue() <
+			(std::numeric_limits<char>::min() / this->_value))
+		throw OperandInt8::OverflowException();
+	else if (this->_value <= 0 &&
+			dynamic_cast<const OperandInt8 &>(rhs).getValue() > 0 &&
+			this->_value < (std::numeric_limits<char>::min() /
+			dynamic_cast<const OperandInt8 &>(rhs).getValue()))
+		throw OperandInt8::OverflowException();
+	else if (this->_value <= 0 &&
+			dynamic_cast<const OperandInt8 &>(rhs).getValue() <= 0 &&
+			dynamic_cast<const OperandInt8 &>(rhs).getValue() <
+			(std::numeric_limits<char>::max() / this->_value))
+		throw OperandInt8::OverflowException();
 	result = this->_value * dynamic_cast<const OperandInt8 &>(rhs).getValue();
 	op_result = this->_factory->createOperand(Int8,
 		std::to_string(static_cast<int>(result)));

@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 11:55:23 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/06 14:33:28 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/08 11:37:53 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,16 +102,6 @@ IOperand const			*OperandInt32::operator*(IOperand const &rhs) const
 		op_result = this->_factory->createOperand(Int32, "0");
 		return (op_result);
 	}
-	else if (this->_value > 0 &&
-			dynamic_cast<const OperandInt32 &>(rhs).getValue() > 0 &&
-			this->_value > (std::numeric_limits<int>::max() /
-			dynamic_cast<const OperandInt32 &>(rhs).getValue()))
-		throw OperandInt32::OverflowException();
-	else if (this->_value < 0 &&
-			dynamic_cast<const OperandInt32 &>(rhs).getValue() < 0 &&
-			this->_value < (std::numeric_limits<int>::max() /
-			dynamic_cast<const OperandInt32 &>(rhs).getValue()))
-		throw OperandInt32::OverflowException();
 	else if (this->_value == -1 && std::numeric_limits<int>::min() ==
 			dynamic_cast<const OperandInt32 &>(rhs).getValue())
 		throw OperandInt32::OverflowException();
@@ -119,15 +109,25 @@ IOperand const			*OperandInt32::operator*(IOperand const &rhs) const
 			this->_value == std::numeric_limits<int>::min())
 		throw OperandInt32::OverflowException();
 	else if (this->_value > 0 &&
-			dynamic_cast<const OperandInt32 &>(rhs).getValue() > 0 &&	
+			dynamic_cast<const OperandInt32 &>(rhs).getValue() > 0 &&
+			this->_value > (std::numeric_limits<int>::max() /
+			dynamic_cast<const OperandInt32 &>(rhs).getValue()))
+		throw OperandInt32::OverflowException();
+	else if (this->_value > 0 &&
+			dynamic_cast<const OperandInt32 &>(rhs).getValue() <= 0 &&
+			dynamic_cast<const OperandInt32 &>(rhs).getValue() <
+			(std::numeric_limits<int>::min() / this->_value))
+		throw OperandInt32::OverflowException();
+	else if (this->_value <= 0 &&
+			dynamic_cast<const OperandInt32 &>(rhs).getValue() > 0 &&
 			this->_value < (std::numeric_limits<int>::min() /
 			dynamic_cast<const OperandInt32 &>(rhs).getValue()))
-		throw OperandInt32::UnderflowException();
-	else if (this->_value < 0 &&
-			dynamic_cast<const OperandInt32 &>(rhs).getValue() < 0 &&	
-			this->_value > (std::numeric_limits<int>::min() /
-			dynamic_cast<const OperandInt32 &>(rhs).getValue()))
-		throw OperandInt32::UnderflowException();
+		throw OperandInt32::OverflowException();
+	else if (this->_value <= 0 &&
+			dynamic_cast<const OperandInt32 &>(rhs).getValue() <= 0 &&
+			dynamic_cast<const OperandInt32 &>(rhs).getValue() <
+			(std::numeric_limits<int>::max() / this->_value))
+		throw OperandInt32::OverflowException();
 	result = this->_value * dynamic_cast<const OperandInt32 &>(rhs).getValue();
 	op_result = this->_factory->createOperand(Int32, std::to_string(result));
 	return (op_result);

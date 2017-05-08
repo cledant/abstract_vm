@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 14:04:53 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/06 14:16:49 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/08 11:36:29 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -307,8 +307,8 @@ void	multiplication_test(void)
 	{
 		a1 = factory->createOperand(Int32, "-32768");
 		a2 = factory->createOperand(Int32, "-1");
-		a3 = *a1 * *a2;
 		std::cout << "a1 : " << dynamic_cast<const OperandInt32 *>(a1)->toString() << std::endl;
+		a3 = *a1 * *a2;
 		std::cout << "a2 : " << dynamic_cast<const OperandInt32 *>(a2)->toString() << std::endl;
 		std::cout << "multiplication test 6: " << dynamic_cast<const OperandInt32 *>(a3)->toString() << std::endl << "===========" << std::endl;
 		delete a1;

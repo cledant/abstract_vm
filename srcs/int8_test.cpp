@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 14:04:53 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/06 13:19:16 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/08 12:05:19 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -319,6 +319,27 @@ void	multiplication_test(void)
 		delete a2;
 		std::cout << e.what() << std::endl << "===========" << std::endl;
 	}
+
+	//Exception raising test3
+	try
+	{
+		a1 = factory->createOperand(Int8, "-1");
+		a2 = factory->createOperand(Int8, "-128");
+		a3 = *a1 * *a2;
+		std::cout << "a1 : " << dynamic_cast<const OperandInt8 *>(a1)->toString() << std::endl;
+		std::cout << "a2 : " << dynamic_cast<const OperandInt8 *>(a2)->toString() << std::endl;
+		std::cout << "multiplication test 5: " << dynamic_cast<const OperandInt8 *>(a3)->toString() << std::endl << "===========" << std::endl;
+		delete a1;
+		delete a2;
+		delete a3;
+	}
+	catch (std::exception &e)
+	{
+		delete a1;
+		delete a2;
+		std::cout << e.what() << std::endl << "===========" << std::endl;
+	}
+
 	std::cout << std::endl;
 	delete factory;
 }

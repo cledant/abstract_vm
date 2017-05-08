@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 11:55:23 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/05 10:54:23 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/08 11:49:58 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,18 +104,32 @@ IOperand const			*OperandInt16::operator*(IOperand const &rhs) const
 		op_result = this->_factory->createOperand(Int16, "0");
 		return (op_result);
 	}
-	else if (this->_value > (std::numeric_limits<short int>::max() /
-			dynamic_cast<const OperandInt16 &>(rhs).getValue()))
-		throw OperandInt16::OverflowException();
 	else if (this->_value == -1 && std::numeric_limits<short int>::min() ==
 			dynamic_cast<const OperandInt16 &>(rhs).getValue())
 		throw OperandInt16::OverflowException();
 	else if (dynamic_cast<const OperandInt16 &>(rhs).getValue() == -1 &&
 			this->_value == std::numeric_limits<short int>::min())
 		throw OperandInt16::OverflowException();
-	else if (this->_value < (std::numeric_limits<short int>::min() /
+	else if (this->_value > 0 &&
+			dynamic_cast<const OperandInt16 &>(rhs).getValue() > 0 &&
+			this->_value > (std::numeric_limits<short int>::max() /
+			dynamic_cast<const OperandInt16 &>(rhs).getValue()))
+		throw OperandInt16::OverflowException();
+	else if (this->_value > 0 &&
+			dynamic_cast<const OperandInt16 &>(rhs).getValue() <= 0 &&
+			dynamic_cast<const OperandInt16 &>(rhs).getValue() <
+			(std::numeric_limits<short int>::min() / this->_value))
+		throw OperandInt16::UnderflowException();
+	else if (this->_value <= 0 &&
+			dynamic_cast<const OperandInt16 &>(rhs).getValue() > 0 &&
+			this->_value < (std::numeric_limits<short int>::min() /
 			dynamic_cast<const OperandInt16 &>(rhs).getValue()))
 		throw OperandInt16::UnderflowException();
+	else if (this->_value <= 0 &&
+			dynamic_cast<const OperandInt16 &>(rhs).getValue() <= 0 &&
+			dynamic_cast<const OperandInt16 &>(rhs).getValue() <
+			(std::numeric_limits<short int>::max() / this->_value))
+		throw OperandInt16::OverflowException();
 	result = this->_value * dynamic_cast<const OperandInt16 &>(rhs).getValue();
 	op_result = this->_factory->createOperand(Int16,
 		std::to_string(static_cast<int>(result)));

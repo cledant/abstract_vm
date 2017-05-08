@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 14:04:53 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/06 14:24:13 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/08 11:48:18 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,27 +219,48 @@ void	multiplication_test(void)
 	//Multiplication test
 
 	//Simple test
-	a1 = factory->createOperand(Int16, "10");
-	a2 = factory->createOperand(Int16, "30");
+	a1 = factory->createOperand(Int16, "100");
+	a2 = factory->createOperand(Int16, "300");
 	a3 = *a1 * *a2;
 	std::cout << "a1 : " << dynamic_cast<const OperandInt16 *>(a1)->toString() << std::endl;
 	std::cout << "a2 : " << dynamic_cast<const OperandInt16 *>(a2)->toString() << std::endl;
-	std::cout << "multiplication test 1: " << dynamic_cast<const OperandInt16 *>(a3)->toString() << std::endl << "===========" << std::endl;
+	std::cout << "multiplication test 2a: " << dynamic_cast<const OperandInt16 *>(a3)->toString() << std::endl << "===========" << std::endl;
 	delete a1;
 	delete a2;
 	delete a3;
 
 	//Negative number test
-	a1 = factory->createOperand(Int16, "-10");
-	a2 = factory->createOperand(Int16, "30");
+	a1 = factory->createOperand(Int16, "-100");
+	a2 = factory->createOperand(Int16, "300");
 	a3 = *a1 * *a2;
 	std::cout << "a1 : " << dynamic_cast<const OperandInt16 *>(a1)->toString() << std::endl;
 	std::cout << "a2 : " << dynamic_cast<const OperandInt16 *>(a2)->toString() << std::endl;
-	std::cout << "multiplication test 2: " << dynamic_cast<const OperandInt16 *>(a3)->toString() << std::endl << "===========" << std::endl;
+	std::cout << "multiplication test 2b: " << dynamic_cast<const OperandInt16 *>(a3)->toString() << std::endl << "===========" << std::endl;
 	delete a1;
 	delete a2;
 	delete a3;
 
+	//Negative number test
+	a1 = factory->createOperand(Int16, "-100");
+	a2 = factory->createOperand(Int16, "-300");
+	a3 = *a1 * *a2;
+	std::cout << "a1 : " << dynamic_cast<const OperandInt16 *>(a1)->toString() << std::endl;
+	std::cout << "a2 : " << dynamic_cast<const OperandInt16 *>(a2)->toString() << std::endl;
+	std::cout << "multiplication test 2c: " << dynamic_cast<const OperandInt16 *>(a3)->toString() << std::endl << "===========" << std::endl;
+	delete a1;
+	delete a2;
+	delete a3;
+
+	//Negative number test
+	a1 = factory->createOperand(Int16, "100");
+	a2 = factory->createOperand(Int16, "-300");
+	a3 = *a1 * *a2;
+	std::cout << "a1 : " << dynamic_cast<const OperandInt16 *>(a1)->toString() << std::endl;
+	std::cout << "a2 : " << dynamic_cast<const OperandInt16 *>(a2)->toString() << std::endl;
+	std::cout << "multiplication test 2d: " << dynamic_cast<const OperandInt16 *>(a3)->toString() << std::endl << "===========" << std::endl;
+	delete a1;
+	delete a2;
+	delete a3;
 	//Exception raising test1
 	try
 	{
@@ -255,6 +276,8 @@ void	multiplication_test(void)
 	}
 	catch (std::exception &e)
 	{
+		std::cout << "a1 : " << dynamic_cast<const OperandInt16 *>(a1)->toString() << std::endl;
+		std::cout << "a2 : " << dynamic_cast<const OperandInt16 *>(a2)->toString() << std::endl;
 		delete a1;
 		delete a2;
 		std::cout << e.what() << std::endl << "===========" << std::endl;
@@ -275,6 +298,50 @@ void	multiplication_test(void)
 	}
 	catch (std::exception &e)
 	{
+		std::cout << "a1 : " << dynamic_cast<const OperandInt16 *>(a1)->toString() << std::endl;
+		std::cout << "a2 : " << dynamic_cast<const OperandInt16 *>(a2)->toString() << std::endl;
+		delete a1;
+		delete a2;
+		std::cout << e.what() << std::endl << "===========" << std::endl;
+	}
+
+	try
+	{
+		a1 = factory->createOperand(Int16, "-2");
+		a2 = factory->createOperand(Int16, "-30000");
+		a3 = *a1 * *a2;
+		std::cout << "a1 : " << dynamic_cast<const OperandInt16 *>(a1)->toString() << std::endl;
+		std::cout << "a2 : " << dynamic_cast<const OperandInt16 *>(a2)->toString() << std::endl;
+		std::cout << "multiplication test 4: " << dynamic_cast<const OperandInt16 *>(a3)->toString() << std::endl << "===========" << std::endl;
+		delete a1;
+		delete a2;
+		delete a3;
+	}
+	catch (std::exception &e)
+	{
+		std::cout << "a1 : " << dynamic_cast<const OperandInt16 *>(a1)->toString() << std::endl;
+		std::cout << "a2 : " << dynamic_cast<const OperandInt16 *>(a2)->toString() << std::endl;
+		delete a1;
+		delete a2;
+		std::cout << e.what() << std::endl << "===========" << std::endl;
+	}
+
+	try
+	{
+		a1 = factory->createOperand(Int16, "2");
+		a2 = factory->createOperand(Int16, "-30000");
+		a3 = *a1 * *a2;
+		std::cout << "a1 : " << dynamic_cast<const OperandInt16 *>(a1)->toString() << std::endl;
+		std::cout << "a2 : " << dynamic_cast<const OperandInt16 *>(a2)->toString() << std::endl;
+		std::cout << "multiplication test 4: " << dynamic_cast<const OperandInt16 *>(a3)->toString() << std::endl << "===========" << std::endl;
+		delete a1;
+		delete a2;
+		delete a3;
+	}
+	catch (std::exception &e)
+	{
+		std::cout << "a1 : " << dynamic_cast<const OperandInt16 *>(a1)->toString() << std::endl;
+		std::cout << "a2 : " << dynamic_cast<const OperandInt16 *>(a2)->toString() << std::endl;
 		delete a1;
 		delete a2;
 		std::cout << e.what() << std::endl << "===========" << std::endl;
@@ -295,6 +362,8 @@ void	multiplication_test(void)
 	}
 	catch (std::exception &e)
 	{
+		std::cout << "a1 : " << dynamic_cast<const OperandInt16 *>(a1)->toString() << std::endl;
+		std::cout << "a2 : " << dynamic_cast<const OperandInt16 *>(a2)->toString() << std::endl;
 		delete a1;
 		delete a2;
 		std::cout << e.what() << std::endl << "===========" << std::endl;
@@ -315,6 +384,8 @@ void	multiplication_test(void)
 	}
 	catch (std::exception &e)
 	{
+		std::cout << "a1 : " << dynamic_cast<const OperandInt16 *>(a1)->toString() << std::endl;
+		std::cout << "a2 : " << dynamic_cast<const OperandInt16 *>(a2)->toString() << std::endl;
 		delete a1;
 		delete a2;
 		std::cout << e.what() << std::endl << "===========" << std::endl;
