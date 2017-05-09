@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 09:55:37 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/09 13:04:57 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/09 13:42:26 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,6 @@ enum		eOperator
 	MUL,
 	DIV,
 	MOD,
-};
-
-enum		eCast
-{
-	NO_CAST,
-	CAST_LHS,
-	CAST_RHS,
 };
 
 #endif
