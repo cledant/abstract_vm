@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 14:54:00 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/09 14:33:12 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/09 18:39:44 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,14 @@ AStack::~AStack(void)
 AStack::AStack(AStack const &src)
 {
 	std::vector<IOperand const *>::const_iterator		it;
+	IOperand const										*cpy;
 
 	this->_factory = new OperandFactory();
 	for(it = src.getStack().cbegin(); it != src.getStack().cend(); ++it)
-		this->_stack.push_back(*it);
+	{
+		cpy = this->_factory->createOperand((*it)->getType(), (*it)->toString());
+		this->_stack.push_back(cpy);
+	}
 }
 
 AStack									&AStack::operator=(AStack const &rhs)
