@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 17:16:17 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/09 16:11:45 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/09 17:15:31 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,15 @@ int 		main(void)
 	stack->dump();
 	std::cout << "===========" << std::endl;
 	stack->pop();
+	stack->dump();
+	std::cout << "===========" << std::endl;
+	stack->assert(Int8, "42");
+	stack->dump();
+	std::cout << "===========" << std::endl;
+	stack->push(Double, "42.4200001");
+	stack->dump();
+	std::cout << "===========" << std::endl;
+	stack->assert(Double, "42.42");
 	stack->dump();
 	std::cout << "===========" << std::endl;
 	delete stack;

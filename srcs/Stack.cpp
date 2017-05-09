@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 17:01:28 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/09 16:07:15 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/09 17:01:45 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,4 +123,30 @@ void		Stack::pop(void)
 	rit = this->_stack.rbegin();
 	this->_stack.pop_back();
 	delete *rit;
+}
+
+void		Stack::assert(eOperandType type, std::string const &value)
+{
+	std::vector<IOperand const *>::reverse_iterator		rit;
+	std::unique_ptr<IOperand const>						check;
+
+	if (this->_stack.empty() == true)
+		throw std::runtime_error("Stack : Pop : Stack is empty");
+	rit = this->_stack.rbegin();
+	try
+	{
+		check = std::unique_ptr<IOperand const>(this->_factory->createOperand(type, value));
+	}
+	catch (OperandFactory::OverflowException &e)
+	{
+		throw std::runtime_error("Stack : Assert : Value to assert is invalid");
+	}
+	catch (OperandFactory::UnderflowException &e)
+	{
+		throw std::runtime_error("Stack : Assert : Value to assert is invalid");
+	}
+	if ((*rit)->getType() != check->getType())
+		throw std::runtime_error("Stack : Assert : Stack top value is different from assert");
+	if ((*rit)->toString() != check->toString())
+		throw std::runtime_error("Stack : Assert : Stack top value is different from assert");
 }
