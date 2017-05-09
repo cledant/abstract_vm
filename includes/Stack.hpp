@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 12:38:57 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/09 16:28:54 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/09 18:24:45 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,13 @@ class Stack : public AStack
 		virtual void				mul(void);
 		virtual void				div(void);
 		virtual void				mod(void);
-//		virtual void				print(void);
+		virtual void				print(void);
 
 	private :
 
 		void						do_operation(eOperator op);
+		bool						assert_value(IOperand const *lhs,
+										IOperand const *rhs);
 };
 
 #endif

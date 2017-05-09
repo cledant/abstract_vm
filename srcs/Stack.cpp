@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 17:01:28 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/09 17:01:45 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/09 18:26:12 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,87 @@ void		Stack::push(eOperandType type, std::string const &value)
 	op.release();
 }
 
+void		Stack::pop(void)
+{
+	std::vector<IOperand const *>::reverse_iterator		rit;
+
+	if (this->_stack.empty() == true)
+		throw std::runtime_error("Stack : Pop : Stack is empty");
+	rit = this->_stack.rbegin();
+	this->_stack.pop_back();
+	delete *rit;
+}
+
 void		Stack::dump(void)
 {
 	std::vector<IOperand const *>::reverse_iterator		rit;
 
 	for(rit = this->_stack.rbegin(); rit != this->_stack.rend(); ++rit)
 		std::cout << (*rit)->toString() << std::endl;
+}
+
+void		Stack::assert(eOperandType type, std::string const &value)
+{
+	std::vector<IOperand const *>::reverse_iterator		rit;
+	std::unique_ptr<IOperand const>						check;
+
+	if (this->_stack.empty() == true)
+		throw std::runtime_error("Stack : Pop : Stack is empty");
+	rit = this->_stack.rbegin();
+	try
+	{
+		check = std::unique_ptr<IOperand const>(this->_factory->createOperand(type, value));
+	}
+	catch (OperandFactory::OverflowException &e)
+	{
+		throw std::runtime_error("Stack : Assert : Value to assert is invalid");
+	}
+	catch (OperandFactory::UnderflowException &e)
+	{
+		throw std::runtime_error("Stack : Assert : Value to assert is invalid");
+	}
+	if ((*rit)->getType() != check->getType())
+		throw std::runtime_error("Stack : Assert : Stack top value is different from assert");
+	if (this->assert_value(*rit, check.get()) == false)
+		throw std::runtime_error("Stack : Assert : Stack top value is different from assert");
+}
+
+void		Stack::add(void)
+{
+	this->do_operation(ADD);
+}
+
+void		Stack::sub(void)
+{
+	this->do_operation(SUB);
+}
+
+void		Stack::mul(void)
+{
+	this->do_operation(MUL);
+}
+
+void		Stack::div(void)
+{
+	this->do_operation(DIV);
+}
+
+void		Stack::mod(void)
+{
+	this->do_operation(MOD);
+}
+
+void		Stack::print(void)
+{
+	std::vector<IOperand const *>::reverse_iterator		rit;
+	std::unique_ptr<IOperand const>						check;
+
+	if (this->_stack.empty() == true)
+		throw std::runtime_error("Stack : Print : Stack is empty");
+	rit = this->_stack.rbegin();
+	if ((*rit)->getType() != Int8)
+		throw std::runtime_error("Stack : Print : Not a Int8");
+	std::cout << dynamic_cast<OperandInt8 const *>(*rit)->getValue() << std::endl;
 }
 
 void		Stack::do_operation(eOperator op)
@@ -89,64 +164,37 @@ void		Stack::do_operation(eOperator op)
 	result.release();
 }
 
-void		Stack::add(void)
+bool		Stack::assert_value(IOperand const *lhs, IOperand const *rhs)
 {
-	this->do_operation(ADD);
-}
-
-void		Stack::sub(void)
-{
-	this->do_operation(SUB);
-}
-
-void		Stack::mul(void)
-{
-	this->do_operation(MUL);
-}
-
-void		Stack::div(void)
-{
-	this->do_operation(DIV);
-}
-
-void		Stack::mod(void)
-{
-	this->do_operation(MOD);
-}
-
-void		Stack::pop(void)
-{
-	std::vector<IOperand const *>::reverse_iterator		rit;
-
-	if (this->_stack.empty() == true)
-		throw std::runtime_error("Stack : Pop : Stack is empty");
-	rit = this->_stack.rbegin();
-	this->_stack.pop_back();
-	delete *rit;
-}
-
-void		Stack::assert(eOperandType type, std::string const &value)
-{
-	std::vector<IOperand const *>::reverse_iterator		rit;
-	std::unique_ptr<IOperand const>						check;
-
-	if (this->_stack.empty() == true)
-		throw std::runtime_error("Stack : Pop : Stack is empty");
-	rit = this->_stack.rbegin();
-	try
+	if (lhs->getType() == Int8)
 	{
-		check = std::unique_ptr<IOperand const>(this->_factory->createOperand(type, value));
+		if (dynamic_cast<OperandInt8 const *>(lhs)->getValue() ==
+				dynamic_cast<OperandInt8 const *>(rhs)->getValue())
+			return (true);
 	}
-	catch (OperandFactory::OverflowException &e)
+	else if (lhs->getType() == Int16)
 	{
-		throw std::runtime_error("Stack : Assert : Value to assert is invalid");
+		if (dynamic_cast<OperandInt16 const *>(lhs)->getValue() ==
+				dynamic_cast<OperandInt16 const *>(rhs)->getValue())
+			return (true);
 	}
-	catch (OperandFactory::UnderflowException &e)
+	else if (lhs->getType() == Int32)
 	{
-		throw std::runtime_error("Stack : Assert : Value to assert is invalid");
+		if (dynamic_cast<OperandInt32 const *>(lhs)->getValue() ==
+				dynamic_cast<OperandInt32 const *>(rhs)->getValue())
+			return (true);
 	}
-	if ((*rit)->getType() != check->getType())
-		throw std::runtime_error("Stack : Assert : Stack top value is different from assert");
-	if ((*rit)->toString() != check->toString())
-		throw std::runtime_error("Stack : Assert : Stack top value is different from assert");
+	else if (lhs->getType() == Float)
+	{
+		if (dynamic_cast<OperandFloat const *>(lhs)->getValue() ==
+				dynamic_cast<OperandFloat const *>(rhs)->getValue())
+			return (true);
+	}
+	else if (lhs->getType() == Double)
+	{
+		if (dynamic_cast<OperandDouble const *>(lhs)->getValue() ==
+				dynamic_cast<OperandDouble const*>(rhs)->getValue())
+			return (true);
+	}
+	return (false);
 }

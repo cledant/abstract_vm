@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 12:38:57 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/09 16:58:18 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/09 18:24:47 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ class AStack
 		virtual void					mul(void) = 0;
 		virtual void					div(void) = 0;
 		virtual void					mod(void) = 0;
-//		void							print(void) = 0;
+		virtual void					print(void) = 0;
 
 	protected :
 
