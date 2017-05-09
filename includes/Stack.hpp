@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 12:38:57 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/09 14:50:30 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/09 16:07:51 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,20 @@ class Stack : public AStack
 
 		virtual void				push(eOperandType type,
 										std::string const &value);
-//		void						pop(void);
+		virtual void				pop(void);
 		virtual void				dump(void);
-/*		void						assert(eOperandType type,
+/*		virtual void				assert(eOperandType type,
 										std::string const &value);*/
 		virtual void				add(void);
-/*		void						sub(void);
-		void						mul(void);
-		void						div(void);
-		void						mod(void);
-		void						print(void);*/
+		virtual void				sub(void);
+		virtual void				mul(void);
+		virtual void				div(void);
+		virtual void				mod(void);
+//		virtual void				print(void);
+
+	private :
+
+		void						do_operation(eOperator op);
 };
 
 #endif
