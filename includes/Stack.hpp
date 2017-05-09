@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 12:38:57 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/08 20:09:22 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/09 13:06:30 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,7 @@ class Stack : public AStack
 //		void						pop(void);
 		virtual void				dump(void);
 /*		void						assert(eOperandType type,
-										std::string const &value);
-		void						assert(void);*/
+										std::string const &value);*/
 		virtual void				add(void);
 /*		void						sub(void);
 		void						mul(void);
@@ -37,6 +36,12 @@ class Stack : public AStack
 		void						mod(void);
 		void						print(void);*/
 
+	private :
+		void						do_operation(IOperand const *lhs,
+										IOperand const *rhs, eOperandType type,
+										eCast cast, eOperator op);
+		void						do_add(IOperand const *lhs, IOperand const *rhs,
+										eCast cast, eOperandType type);
 };
 
 #endif

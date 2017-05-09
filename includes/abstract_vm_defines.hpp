@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 09:55:37 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/03 14:12:31 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/09 13:04:57 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,22 @@ enum		eOperandType
 	Int32 = 2,
 	Float = 3,
 	Double = 4,
+};
+
+enum		eOperator
+{
+	ADD,
+	SUB,
+	MUL,
+	DIV,
+	MOD,
+};
+
+enum		eCast
+{
+	NO_CAST,
+	CAST_LHS,
+	CAST_RHS,
 };
 
 #endif
