@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 09:55:37 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/11 11:28:24 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/11 12:50:24 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,12 @@ enum		eInstruction
 	MOD,
 	PRINT,
 	EXIT,
+};
+
+enum		eOrigin
+{
+	KEYBOARD,
+	FILES,
 };
 
 #endif
