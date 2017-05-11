@@ -1,49 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   abstract_vm_defines.hpp                            :+:      :+:    :+:   */
+/*   Parser.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/05/03 09:55:37 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/11 11:28:24 by cledant          ###   ########.fr       */
+/*   Created: 2017/05/11 10:40:39 by cledant           #+#    #+#             */
+/*   Updated: 2017/05/11 12:01:52 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ABSTRACT_VM_DEFINES_HPP
-# define ABSTRACT_VM_DEFINES_HPP
+#ifndef PARSER_HPP
+# define PARSER_HPP
 
-enum		eOperandType
+class Parser
 {
-	Int8 = 0,
-	Int16 = 1,
-	Int32 = 2,
-	Float = 3,
-	Double = 4,
-};
-
-enum		eOperator
-{
-	ADD,
-	SUB,
-	MUL,
-	DIV,
-	MOD,
-};
-
-enum		eInstruction
-{
-	PUSH,
-	POP,
-	DUMP,
-	ASSERT,
-	ADD,
-	SUB,
-	MUL,
-	DIV,
-	MOD,
-	PRINT,
-	EXIT,
-};
+	
+}
 
 #endif
