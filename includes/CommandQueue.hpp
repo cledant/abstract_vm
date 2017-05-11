@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 10:44:20 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/11 13:01:30 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/11 16:24:14 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 
 struct	Token
 {
-	enum eInstruction		inst;
-	enum eOperator			type;
+	eInstruction			inst;
+	eOperator				type;
 	std::string				value;
 };
 
@@ -32,7 +32,7 @@ class 	CommandQueue
 		virtual CommandQueue			&operator=(CommandQueue const &rhs);
 
 		void							push(struct Token token); //add new token
-		void							pop(void); //execute command and removes token
+//		void							pop(void); //execute command and removes token
 
 	private :
 

@@ -6,44 +6,45 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 12:35:13 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/11 12:59:57 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/11 16:40:38 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "Env.hpp"
 
 int		main(int argc, char **argv)
 {
 	std::unique_ptr<Env>	env;
-	size_t					c;
+	int						c;
 
 	if (argc == 1)
 	{
-		env.reset(new Env(KEYBOARD));
-		try
+/*		try
 		{
-			(*env)->parser->parse_from_stdin();
+			env.reset(new Env());
+			(*env)->parse_from_stdin();
 			(*env)->execute_program();
 		}
 		catch (std::exception	&e)
 		{
 			std::cout << e.what() << std::endl;
-			env.release();
 			return (0);
-		}
+		}*/
+		std::cout << "Not now" << std::endl;
 	}
 	else
 	{
-		for (c = 0,	c == argc, ++c)
+		for (c = 1;	c != argc; ++c)
 		{
-			env.reset(new Env(FILES, argv[c]));
 			try
 			{
-				(*env)->parser->parse_from_file();
-				(*env)->execute_program();
+				env.reset(new Env(argv[c]));
+				(*env).parse_from_file();
+//				(*env)->execute_program();
 			}
 			catch (std::exception	&e)
 			{
 				std::cout << e.what() << std::endl;
-				env.release();
 				return (0);
 			}
 		}
