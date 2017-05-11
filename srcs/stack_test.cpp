@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 17:16:17 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/09 18:26:36 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/11 21:35:10 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int 		main(void)
 {
 	AStack	*stack =	new Stack();
+	AStack	*cpy =	nullptr;
 
 	stack->push(Int8, "42");
 	stack->push(Double, "42.42");
@@ -55,7 +56,11 @@ int 		main(void)
 	stack->print();
 	stack->dump();
 	std::cout << "===========" << std::endl;
+	*cpy = *stack;
 	delete stack;
+	std::cout << "Cpy Test :" << std::endl;
+	cpy->dump();
+	std::cout << "===========" << std::endl;
 	while(1);
 	return (0);
 }
