@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 10:17:28 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/06 14:01:56 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/12 09:43:37 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ class OperandInt32 : public IOperand
 		OperandInt32(void);
 		virtual ~OperandInt32(void);
 		OperandInt32(OperandInt32 const &src);
-		virtual OperandInt32				&operator=(OperandInt32 const &rhs);
+		OperandInt32						&operator=(OperandInt32 const &rhs);
 
 		OperandInt32(int const value);
 

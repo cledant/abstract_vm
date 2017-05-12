@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 10:17:28 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/05 10:55:39 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/12 09:43:24 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ class OperandInt16 : public IOperand
 		OperandInt16(void);
 		virtual ~OperandInt16(void);
 		OperandInt16(OperandInt16 const &src);
-		virtual OperandInt16				&operator=(OperandInt16 const &rhs);
+		OperandInt16						&operator=(OperandInt16 const &rhs);
 
 		OperandInt16(short int const value);
 

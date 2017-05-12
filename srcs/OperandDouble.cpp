@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   OperandDouble.cpp                                   :+:      :+:    :+:   */
+/*   OperandDouble.cpp                  i                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 11:55:23 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/06 10:39:46 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/12 09:32:25 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ OperandDouble			&OperandDouble::operator=(OperandDouble const &rhs)
 {
 	this->_value = rhs.getValue();
 	this->_str_value = rhs.toString().c_str();
-	return(*this);
+	return (*this);
 }
 
 OperandDouble::OperandDouble(double const value) : _value(value)

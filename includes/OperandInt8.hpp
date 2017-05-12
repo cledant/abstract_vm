@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 10:17:28 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/06 12:50:09 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/12 09:43:14 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ class OperandInt8 : public IOperand
 		OperandInt8(void);
 		virtual ~OperandInt8(void);
 		OperandInt8(OperandInt8 const &src);
-		virtual OperandInt8					&operator=(OperandInt8 const &rhs);
+		OperandInt8							&operator=(OperandInt8 const &rhs);
 
 		OperandInt8(char const value);
 

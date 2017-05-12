@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 10:17:28 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/06 10:29:31 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/12 09:38:54 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ class OperandDouble : public IOperand
 		OperandDouble(void);
 		virtual ~OperandDouble(void);
 		OperandDouble(OperandDouble const &src);
-		virtual OperandDouble				&operator=(OperandDouble const &rhs);
+		OperandDouble						&operator=(OperandDouble const &rhs);
 
 		OperandDouble(double const value);
 

@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 10:17:28 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/05 18:51:21 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/12 09:43:03 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ class OperandFloat : public IOperand
 		OperandFloat(void);
 		virtual ~OperandFloat(void);
 		OperandFloat(OperandFloat const &src);
-		virtual OperandFloat				&operator=(OperandFloat const &rhs);
+		OperandFloat						&operator=(OperandFloat const &rhs);
 
 		OperandFloat(float const value);
 
