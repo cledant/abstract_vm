@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 12:38:57 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/11 12:01:54 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/12 09:46:31 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ class AStack
 		AStack(void);
 		virtual ~AStack(void);
 		AStack(AStack const &src);
-		virtual AStack							&operator=(AStack const &rhs);
+		AStack							&operator=(AStack const &rhs);
 
 		std::vector<IOperand const *> const		&getStack(void) const;
 
