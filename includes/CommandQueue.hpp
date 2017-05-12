@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/12 10:48:07 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/12 11:28:39 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/12 18:25:55 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,10 @@ class CommandQueue
 		CommandQueue							&operator=(CommandQueue const &rhs);
 
 		std::deque<Token const *> const			&getStack(void) const;
-//		void									push(Token const *tok);
+		void									push(Token const &tok);
 		void									pop(void);
 		Token const								*getFront(void);
+		bool									isEmpty(void);
 
 	private :
 

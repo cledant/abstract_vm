@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/12 10:52:24 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/12 11:29:13 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/12 18:34:49 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,15 @@ std::deque<Token const *> const		&CommandQueue::getStack(void) const
 	return (this->_stack);
 }
 
+void								CommandQueue::push(Token const &tok)
+{
+	std::unique_ptr<Token const>		p_tok;
+
+	p_tok.reset(new Token(tok.inst, tok.type, tok.value.c_str()));
+	this->_stack.push_back(p_tok.get());
+	p_tok.release();
+}
+
 void								CommandQueue::pop(void)
 {
 	Token const		*pop;
@@ -71,4 +80,9 @@ Token const							*CommandQueue::getFront(void)
 	if (this->_stack.empty() == true)
 		throw std::runtime_error("CommandQueue is Empty");
 	return (this->_stack.front());
+}
+
+bool								CommandQueue::isEmpty(void)
+{
+	return (this->_stack.empty());
 }
