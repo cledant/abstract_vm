@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 14:07:25 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/12 10:57:59 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/15 12:13:51 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ class Env
 		CommandQueue const									*getQueue(void) const;
 	//	void												parse_from_stdin(void);
 		void												parse_from_file(void);
-//		void												execute_program(void);
+		void												execute_program(void);
 
 	private :
 

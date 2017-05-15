@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 12:35:13 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/11 16:40:38 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/15 13:15:30 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ int		main(int argc, char **argv)
 			try
 			{
 				env.reset(new Env(argv[c]));
-				(*env).parse_from_file();
-//				(*env)->execute_program();
+				env->parse_from_file();
+				env->execute_program();
 			}
 			catch (std::exception	&e)
 			{

@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 14:58:08 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/12 11:02:30 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/15 13:31:30 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,5 +127,53 @@ void					Env::parse_from_file(void)
 	while (std::getline(this->_ifs, line))
 	{
 		std::cout << line << std::endl;
+	}
+}
+
+void					Env::execute_program(void)
+{
+	Token const			*queue_tok = nullptr;
+	bool				loop = true;
+
+	while (this->_cqueue->isEmpty() == false && loop == true)
+	{
+		queue_tok = this->_cqueue->getFront();
+		switch (queue_tok->inst)
+		{
+			case I_PUSH :
+				this->_stack->push(queue_tok->type, queue_tok->value);
+				break ;
+			case I_POP :
+				this->_stack->pop();
+				break ;
+			case I_DUMP :
+				this->_stack->dump();
+				break ;
+			case I_ASSERT :
+				this->_stack->push(queue_tok->type, queue_tok->value);
+				break ;
+			case I_ADD :
+				this->_stack->add();
+				break ;
+			case I_SUB :
+				this->_stack->sub();
+				break ;
+			case I_MUL :
+				this->_stack->mul();
+				break ;
+			case I_DIV :
+				this->_stack->div();
+				break ;
+			case I_MOD :
+				this->_stack->mod();
+				break ;
+			case I_PRINT :
+				this->_stack->print();
+				break ;
+			case I_EXIT :
+				loop = false;
+				break ;
+		}
+		this->_cqueue->pop();
 	}
 }
