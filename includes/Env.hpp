@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 14:07:25 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/16 18:39:38 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/16 19:25:13 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ class Env
 		CommandQueue const				*getQueue(void) const;
 		bool							getHasError(void) const;
 		bool							getHasExit(void) const;
+		bool							getHasStdinExit(void) const;
 		void							parse_from_stdin(void);
 		void							parse_from_file(void);
 		void							execute_program(void);
@@ -84,6 +85,7 @@ class Env
 		eOrigin							_orig;
 		bool							_has_error;
 		bool							_has_exit;
+		bool							_has_stdin_exit;
 };
 
 #endif

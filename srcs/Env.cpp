@@ -6,13 +6,13 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 14:58:08 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/16 18:53:16 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/16 19:31:13 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Env.hpp"
 
-Env::Env(void) : _ifs(nullptr), _stack(nullptr), _cqueue(nullptr), _parser(nullptr), _filename(nullptr), _orig(KEYBOARD), _has_error(false), _has_exit(false)
+Env::Env(void) : _ifs(nullptr), _stack(nullptr), _cqueue(nullptr), _parser(nullptr), _filename(nullptr), _orig(KEYBOARD), _has_error(false), _has_exit(false), _has_stdin_exit(false)
 {
 	try
 	{
@@ -38,7 +38,7 @@ Env::~Env(void)
 	delete this->_cqueue;
 }
 
-Env::Env(Env const &src) : _ifs(src.getFilename()), _stack(nullptr), _cqueue(nullptr), _parser(nullptr), _filename(nullptr), _orig(src.getOrigin()), _has_error(src.getHasError()), _has_exit(src.getHasExit())
+Env::Env(Env const &src) : _ifs(src.getFilename()), _stack(nullptr), _cqueue(nullptr), _parser(nullptr), _filename(nullptr), _orig(src.getOrigin()), _has_error(src.getHasError()), _has_exit(src.getHasExit()), _has_stdin_exit(src.getHasStdinExit())
 {
 	if (this->_orig == FILES && !(this->_ifs))
 		throw std::runtime_error("Env : Can't open file !");
@@ -67,6 +67,7 @@ Env									&Env::operator=(Env const &rhs)
 	this->_filename = rhs.getFilename();
 	this->_has_error = rhs.getHasError();
 	this->_has_exit = rhs.getHasExit();
+	this->_has_stdin_exit = rhs.getHasStdinExit();
 	if (this->_ifs)
 		this->_ifs.close();
 	if (this->_orig == FILES)
@@ -78,7 +79,7 @@ Env									&Env::operator=(Env const &rhs)
 	return (*this);
 }
 
-Env::Env(char const *file) : _ifs(file), _stack(nullptr), _cqueue(nullptr), _parser(nullptr), _filename(file), _orig(FILES), _has_error(false), _has_exit(false)
+Env::Env(char const *file) : _ifs(file), _stack(nullptr), _cqueue(nullptr), _parser(nullptr), _filename(file), _orig(FILES), _has_error(false), _has_exit(false), _has_stdin_exit(false)
 {
 	if (!(this->_ifs))
 		throw std::runtime_error("Env : Can't open file !");
@@ -132,6 +133,11 @@ bool					Env::getHasExit(void) const
 	return (this->_has_exit);
 }
 
+bool					Env::getHasStdinExit(void) const
+{
+	return (this->_has_stdin_exit);
+}
+
 void					Env::parse_from_stdin(void)
 {
 	std::string		line;
@@ -144,7 +150,10 @@ void					Env::parse_from_stdin(void)
 	{
 		cpy_line = line;
 		if (check_stdin_end(line))
+		{
+			this->_has_stdin_exit = true;
 			break ;
+		}
 		had_comment = remove_comment(line);
 		if (check_push(line, had_comment))
 			create_token(I_PUSH, line);
@@ -181,8 +190,16 @@ void					Env::parse_from_stdin(void)
 		}
 		line_nb++;
 	}
+	if (this->_has_stdin_exit == false)
+	{
+		this->_has_error = true;
+		std::cout << "Parse Error : No exit sequence from stdin !" << std::endl;
+	}
 	if (this->_has_exit == false)
-		throw std::runtime_error("Parse Error : No exit !");
+	{
+		this->_has_error = true;
+		std::cout << "Parse Error : No exit !" << std::endl;
+	}
 	if (this->_has_error)
 		throw std::runtime_error("Parse Error : Error in program !");
 }
@@ -235,7 +252,10 @@ void					Env::parse_from_file(void)
 		line_nb++;
 	}
 	if (this->_has_exit == false)
-		throw std::runtime_error("Parse Error : No exit !");
+	{
+		this->_has_error = true;
+		std::cout << "Parse Error : No exit !" << std::endl;
+	}
 	if (this->_has_error)
 		throw std::runtime_error("Parse Error : Error in program !");
 }
@@ -452,7 +472,7 @@ bool				Env::check_empty(std::string &line, bool has_comment) const
 
 bool				Env::check_stdin_end(std::string &line) const
 {
-	std::regex		got_comment("^;;[\t ]*;[.]*");
+	std::regex		got_comment("^;;[\t ]*;.*");
 
 	if (std::regex_match(line, got_comment))
 		return (true);
