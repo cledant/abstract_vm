@@ -6,13 +6,13 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 14:58:08 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/15 13:31:30 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/16 14:18:59 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Env.hpp"
 
-Env::Env(void) : _ifs(nullptr), _stack(nullptr), _cqueue(nullptr), _parser(nullptr), _filename(nullptr), _orig(KEYBOARD)
+Env::Env(void) : _ifs(nullptr), _stack(nullptr), _cqueue(nullptr), _parser(nullptr), _filename(nullptr), _orig(KEYBOARD), _has_error(false), _has_exit(false)
 {
 	try
 	{
@@ -38,7 +38,7 @@ Env::~Env(void)
 	delete this->_cqueue;
 }
 
-Env::Env(Env const &src) : _ifs(src.getFilename()), _stack(nullptr), _cqueue(nullptr), _parser(nullptr), _filename(nullptr), _orig(src.getOrigin())
+Env::Env(Env const &src) : _ifs(src.getFilename()), _stack(nullptr), _cqueue(nullptr), _parser(nullptr), _filename(nullptr), _orig(src.getOrigin()), _has_error(src.getHasError()), _has_exit(src.getHasExit())
 {
 	if (this->_orig == FILES && !(this->_ifs))
 		throw std::runtime_error("Env : Can't open file !");
@@ -65,6 +65,8 @@ Env									&Env::operator=(Env const &rhs)
 	this->_cqueue = const_cast<CommandQueue *>(rhs.getQueue());
 	this->_orig = rhs.getOrigin();
 	this->_filename = rhs.getFilename();
+	this->_has_error = rhs.getHasError();
+	this->_has_exit = rhs.getHasExit();
 	if (this->_ifs)
 		this->_ifs.close();
 	if (this->_orig == FILES)
@@ -76,7 +78,7 @@ Env									&Env::operator=(Env const &rhs)
 	return (*this);
 }
 
-Env::Env(char const *file) : _ifs(file), _stack(nullptr), _cqueue(nullptr), _parser(nullptr), _filename(file), _orig(FILES)
+Env::Env(char const *file) : _ifs(file), _stack(nullptr), _cqueue(nullptr), _parser(nullptr), _filename(file), _orig(FILES), _has_error(false), _has_exit(false)
 {
 	if (!(this->_ifs))
 		throw std::runtime_error("Env : Can't open file !");
@@ -120,14 +122,65 @@ CommandQueue const		*Env::getQueue(void) const
 	return  (this->_cqueue);
 }
 
+bool					Env::getHasError(void) const
+{
+	return (this->_has_error);
+}
+
+bool					Env::getHasExit(void) const
+{
+	return (this->_has_exit);
+}
+
 void					Env::parse_from_file(void)
 {
 	std::string		line;
+	std::string		cpy_line;
+	size_t			line_nb;
+	bool			had_comment;
+	std::regex		test("^(push) (int8)\\(\\d+\\)[\t ]*");
 
+	line_nb = 0;
 	while (std::getline(this->_ifs, line))
 	{
-		std::cout << line << std::endl;
+		cpy_line = line;
+		had_comment = remove_comment(line);
+		if (check_push(line, had_comment))
+			create_token(I_PUSH, line);
+/*		else if (check_pop(line, had_comment))
+			create_token(I_POP, line);
+		else if (check_assert(line, had_comment))
+			create_token(I_ASSERT, line);*/
+		else if (check_dump(line, had_comment))
+			create_token(I_DUMP, line);
+/*		else if (check_assert(line, had_comment))
+			create_token(I_ASSERT, line);
+		else if (check_add(line, had_comment))
+			create_token(I_ADD, line);
+		else if (check_sub(line, had_comment))
+			create_token(I_SUB, line);
+		else if (check_sub(line, had_comment))
+			create_token(I_SUB, line);
+		else if (check_div(line, had_comment))
+			create_token(I_DIV, line);
+		else if (check_mul(line, had_comment))
+			create_token(I_MUL, line);
+		else if (check_mod(line, had_comment))
+			create_token(I_MOD, line);
+		else if (check_print(line, had_comment))
+			create_token(I_PRINT, line);*/
+		else if (check_exit(line, had_comment))
+			create_token(I_EXIT, line);
+/*		else if (check_empty(line, had_comment))
+			create_token(I_VALID_EMPTY, line);*/
+		else
+			std::cout << "Parse Error at line number " << line_nb << ". Line : " << cpy_line << std::endl;
+		line_nb++;
 	}
+	if (this->_has_exit == false)
+		throw std::runtime_error("Parse Error : No exit !");
+	if (this->_has_error)
+		throw std::runtime_error("Parse Error : Error in program !");
 }
 
 void					Env::execute_program(void)
@@ -175,5 +228,58 @@ void					Env::execute_program(void)
 				break ;
 		}
 		this->_cqueue->pop();
+	}
+}
+
+bool				Env::remove_comment(std::string &line) const
+{
+	size_t		pos;
+
+	pos = line.find(";");
+	if (pos == std::string::npos)
+		return (false);
+	line = line.substr(0, pos);
+	return (true);
+}
+
+bool				Env::check_push(std::string &line, bool has_comment) const
+{
+	std::regex		test("^(push) (int8)\\(\\d+\\)[\t ]*");
+	(void)line;
+	(void)has_comment;
+	(void)test;
+	return (false);
+}
+
+bool				Env::check_dump(std::string &line, bool has_comment) const
+{
+	std::regex		got_comment("^(dump)[\t ]*");
+	std::regex		no_comment("^(dump)");
+
+	if (has_comment)
+		return (std::regex_match(line, got_comment));
+	return (std::regex_match(line, no_comment));
+}
+
+bool				Env::check_exit(std::string &line, bool has_comment) const
+{
+	std::regex		got_comment("^(exit)[\t ]*");
+	std::regex		no_comment("^(exit)");
+
+	if (has_comment)
+		return (std::regex_match(line, got_comment));
+	return (std::regex_match(line, no_comment));
+}
+
+void				Env::create_token(eInstruction inst, std::string &line)
+{
+	(void)inst;
+	(void)line;
+	if (inst == I_DUMP)
+		std::cout << "Token for dump" << std::endl;
+	else if (inst == I_EXIT)
+	{
+		std::cout << "Token for exit" << std::endl;
+		this->_has_exit = true;
 	}
 }

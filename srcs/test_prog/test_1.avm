@@ -1,3 +1,3 @@
-push int32(64);
-pop
-exit;
+push int8(64)
+dump		;comment
+exit
