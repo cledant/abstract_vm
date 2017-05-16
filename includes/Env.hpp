@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 14:07:25 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/16 15:48:00 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/16 16:56:09 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,27 @@ class Env
 		bool							remove_comment(std::string	&line) const;
 		bool							check_push(std::string &line,
 											bool has_comment) const;
+		bool							check_pop(std::string &line,
+											bool has_comment) const;
 		bool							check_dump(std::string &line,
 											bool has_comment) const;
+		bool							check_assert(std::string &line,
+											bool has_comment) const;
+		bool							check_add(std::string &line,
+											bool has_comment) const;
+		bool							check_sub(std::string &line,
+											bool has_comment) const;
+		bool							check_mul(std::string &line,
+											bool has_comment) const;
+		bool							check_div(std::string &line,
+											bool has_comment) const;
+		bool							check_mod(std::string &line,
+											bool has_comment) const;
+		bool							check_print(std::string &line,
+											bool has_comment) const;
 		bool							check_exit(std::string &line,
+											bool has_comment) const;
+		bool							check_empty(std::string &line,
 											bool has_comment) const;
 		void							create_token(eInstruction inst,
 											std::string &line);

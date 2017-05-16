@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 14:58:08 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/16 16:12:11 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/16 17:11:16 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,13 +146,13 @@ void					Env::parse_from_file(void)
 		had_comment = remove_comment(line);
 		if (check_push(line, had_comment))
 			create_token(I_PUSH, line);
-/*		else if (check_pop(line, had_comment))
+		else if (check_pop(line, had_comment))
 			create_token(I_POP, line);
 		else if (check_assert(line, had_comment))
-			create_token(I_ASSERT, line);*/
+			create_token(I_ASSERT, line);
 		else if (check_dump(line, had_comment))
 			create_token(I_DUMP, line);
-/*		else if (check_assert(line, had_comment))
+		else if (check_assert(line, had_comment))
 			create_token(I_ASSERT, line);
 		else if (check_add(line, had_comment))
 			create_token(I_ADD, line);
@@ -167,13 +167,16 @@ void					Env::parse_from_file(void)
 		else if (check_mod(line, had_comment))
 			create_token(I_MOD, line);
 		else if (check_print(line, had_comment))
-			create_token(I_PRINT, line);*/
+			create_token(I_PRINT, line);
 		else if (check_exit(line, had_comment))
 			create_token(I_EXIT, line);
-/*		else if (check_empty(line, had_comment))
-			create_token(I_VALID_EMPTY, line);*/
+		else if (check_empty(line, had_comment))
+			create_token(I_VALID_EMPTY, line);
 		else
+		{
+			this->_has_error = true;
 			std::cout << "Parse Error at line number " << line_nb << ". Line : " << cpy_line << std::endl;
+		}
 		line_nb++;
 	}
 	if (this->_has_exit == false)
@@ -225,6 +228,8 @@ void					Env::execute_program(void)
 			case I_EXIT :
 				loop = false;
 				break ;
+			case I_VALID_EMPTY :
+				break ;
 		}
 		this->_cqueue->pop();
 	}
@@ -265,10 +270,104 @@ bool				Env::check_push(std::string &line, bool has_comment) const
 	return (false);
 }
 
+bool				Env::check_pop(std::string &line, bool has_comment) const
+{
+	std::regex		got_comment("^(pop)[\t ]*");
+	std::regex		no_comment("^(pop)");
+
+	if (has_comment)
+		return (std::regex_match(line, got_comment));
+	return (std::regex_match(line, no_comment));
+}
+
 bool				Env::check_dump(std::string &line, bool has_comment) const
 {
 	std::regex		got_comment("^(dump)[\t ]*");
 	std::regex		no_comment("^(dump)");
+
+	if (has_comment)
+		return (std::regex_match(line, got_comment));
+	return (std::regex_match(line, no_comment));
+}
+
+bool				Env::check_assert(std::string &line, bool has_comment) const
+{
+	std::regex		int_comment("^(assert) (int8|int16|int32)\\([-]?\\d+\\)[\t ]*");
+	std::regex		int_no_comment("^(assert) (int8|int16|int32)\\([-]?\\d+\\)");
+	std::regex		fp_comment("^(assert) (float|double)\\([-]?\\d+(.\\d+)?\\)[\t ]*");
+	std::regex		fp_no_comment("^(assert) (float|double)\\([-]?\\d+(.\\d+)?\\)");
+
+	if (has_comment)
+	{
+		if (std::regex_match(line, int_comment) == true)
+			return (true);
+		if (std::regex_match(line, fp_comment) == true)
+			return (true);
+	}
+	else
+	{
+		if (std::regex_match(line, int_no_comment) == true)
+			return (true);
+		if (std::regex_match(line, fp_no_comment) == true)
+			return (true);
+	}
+	return (false);
+}
+
+bool				Env::check_add(std::string &line, bool has_comment) const
+{
+	std::regex		got_comment("^(add)[\t ]*");
+	std::regex		no_comment("^(add)");
+
+	if (has_comment)
+		return (std::regex_match(line, got_comment));
+	return (std::regex_match(line, no_comment));
+}
+
+bool				Env::check_sub(std::string &line, bool has_comment) const
+{
+	std::regex		got_comment("^(sub)[\t ]*");
+	std::regex		no_comment("^(sub)");
+
+	if (has_comment)
+		return (std::regex_match(line, got_comment));
+	return (std::regex_match(line, no_comment));
+}
+
+bool				Env::check_mul(std::string &line, bool has_comment) const
+{
+	std::regex		got_comment("^(mul)[\t ]*");
+	std::regex		no_comment("^(mul)");
+
+	if (has_comment)
+		return (std::regex_match(line, got_comment));
+	return (std::regex_match(line, no_comment));
+}
+
+bool				Env::check_div(std::string &line, bool has_comment) const
+{
+	std::regex		got_comment("^(div)[\t ]*");
+	std::regex		no_comment("^(div)");
+
+	if (has_comment)
+		return (std::regex_match(line, got_comment));
+	return (std::regex_match(line, no_comment));
+}
+
+bool				Env::check_mod(std::string &line, bool has_comment) const
+{
+	std::regex		got_comment("^(mod)[\t ]*");
+	std::regex		no_comment("^(mod)");
+
+	if (has_comment)
+		return (std::regex_match(line, got_comment));
+	return (std::regex_match(line, no_comment));
+}
+
+bool				Env::check_print(std::string &line, bool has_comment) const
+{
+	std::regex		got_comment("^(print)[\t ]*");
+	std::regex		no_comment("^(print)");
 
 	if (has_comment)
 		return (std::regex_match(line, got_comment));
@@ -283,6 +382,17 @@ bool				Env::check_exit(std::string &line, bool has_comment) const
 	if (has_comment)
 		return (std::regex_match(line, got_comment));
 	return (std::regex_match(line, no_comment));
+}
+
+bool				Env::check_empty(std::string &line, bool has_comment) const
+{
+	std::regex		got_comment("^[\t ]*");
+
+	if (has_comment)
+		return (std::regex_match(line, got_comment));
+	if (line.size() != 0)
+		return (false);
+	return (true);
 }
 
 void				Env::create_token(eInstruction inst, std::string &line)

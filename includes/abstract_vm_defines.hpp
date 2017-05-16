@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 09:55:37 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/16 14:04:18 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/16 16:54:51 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ enum		eInstruction
 	I_MOD,
 	I_PRINT,
 	I_EXIT,
+	I_VALID_EMPTY,
 };
 
 enum		eOrigin
