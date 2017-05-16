@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 14:58:08 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/16 17:11:16 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/16 17:18:27 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,7 +205,7 @@ void					Env::execute_program(void)
 				this->_stack->dump();
 				break ;
 			case I_ASSERT :
-				this->_stack->push(queue_tok->type, queue_tok->value);
+				this->_stack->assert(queue_tok->type, queue_tok->value);
 				break ;
 			case I_ADD :
 				this->_stack->add();

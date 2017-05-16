@@ -2,5 +2,6 @@ push int16(64)
 push int16(-64)
 mul
 dump
-assert int8(42)
+assert int16(-4096)
+;assert int8(42)
 exit
