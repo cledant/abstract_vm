@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 14:58:08 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/16 14:18:59 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/16 14:59:54 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,9 +138,8 @@ void					Env::parse_from_file(void)
 	std::string		cpy_line;
 	size_t			line_nb;
 	bool			had_comment;
-	std::regex		test("^(push) (int8)\\(\\d+\\)[\t ]*");
 
-	line_nb = 0;
+	line_nb = 1;
 	while (std::getline(this->_ifs, line))
 	{
 		cpy_line = line;
@@ -244,10 +243,25 @@ bool				Env::remove_comment(std::string &line) const
 
 bool				Env::check_push(std::string &line, bool has_comment) const
 {
-	std::regex		test("^(push) (int8)\\(\\d+\\)[\t ]*");
-	(void)line;
-	(void)has_comment;
-	(void)test;
+	std::regex		int_comment("^(push) (int8|int16|int32)\\([-]?\\d+\\)[\t ]*");
+	std::regex		int_no_comment("^(push) (int8|int16|int32)\\([-]?\\d+\\)");
+	std::regex		fp_comment("^(push) (float|double)\\([-]?\\d+(.\\d+)?\\)[\t ]*");
+	std::regex		fp_no_comment("^(push) (float|double)\\([-]?\\d+(.\\d+)?\\)");
+
+	if (has_comment)
+	{
+		if (std::regex_match(line, int_comment) == true)
+			return (true);
+		if (std::regex_match(line, fp_comment) == true)
+			return (true);
+	}
+	else
+	{
+		if (std::regex_match(line, int_no_comment) == true)
+			return (true);
+		if (std::regex_match(line, fp_no_comment) == true)
+			return (true);
+	}
 	return (false);
 }
 
@@ -277,6 +291,8 @@ void				Env::create_token(eInstruction inst, std::string &line)
 	(void)line;
 	if (inst == I_DUMP)
 		std::cout << "Token for dump" << std::endl;
+	if (inst == I_PUSH)
+		std::cout << "Token for push" << std::endl;
 	else if (inst == I_EXIT)
 	{
 		std::cout << "Token for exit" << std::endl;
