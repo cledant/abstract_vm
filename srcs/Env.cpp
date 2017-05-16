@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 14:58:08 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/16 14:59:54 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/16 16:12:11 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -287,15 +287,38 @@ bool				Env::check_exit(std::string &line, bool has_comment) const
 
 void				Env::create_token(eInstruction inst, std::string &line)
 {
-	(void)inst;
-	(void)line;
-	if (inst == I_DUMP)
-		std::cout << "Token for dump" << std::endl;
-	if (inst == I_PUSH)
-		std::cout << "Token for push" << std::endl;
-	else if (inst == I_EXIT)
-	{
-		std::cout << "Token for exit" << std::endl;
+	Token		tok;
+
+	token_creation_parse(tok, inst, line);
+	if (inst == I_EXIT)
 		this->_has_exit = true;
+	this->_cqueue->push(tok);
+}
+
+void				Env::token_creation_parse(Token &tok, eInstruction inst,
+						std::string &line)
+{
+	size_t		op_pos;
+	size_t		begin_pos;
+	size_t		end_pos;
+
+	tok.inst = inst;
+	tok.type = Int8;
+	tok.value = "0";
+	if (inst == I_PUSH || inst == I_ASSERT)
+	{
+		if ((op_pos = line.find("int8")) != std::string::npos)
+			tok.type = Int8;
+		else if ((op_pos = line.find("int16")) != std::string::npos)
+			tok.type = Int16;
+		else if ((op_pos = line.find("int32")) != std::string::npos)
+			tok.type = Int32;
+		else if ((op_pos = line.find("float")) != std::string::npos)
+			tok.type = Float;
+		else if ((op_pos = line.find("double")) != std::string::npos)
+			tok.type = Double;
+		begin_pos = line.find("(");
+		end_pos = line.find(")");
+		tok.value = line.substr(begin_pos + 1, end_pos - 1 - begin_pos);
 	}
 }

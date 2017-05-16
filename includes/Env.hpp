@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 14:07:25 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/16 13:59:33 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/16 15:48:00 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ class Env
 											bool has_comment) const;
 		void							create_token(eInstruction inst,
 											std::string &line);
+		void							token_creation_parse(Token &tok,
+											eInstruction inst, std::string &line);
 
 		std::ifstream					_ifs;
 		AStack							*_stack;
