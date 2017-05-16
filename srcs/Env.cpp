@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 14:58:08 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/16 17:18:27 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/16 18:53:16 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,61 @@ bool					Env::getHasError(void) const
 bool					Env::getHasExit(void) const
 {
 	return (this->_has_exit);
+}
+
+void					Env::parse_from_stdin(void)
+{
+	std::string		line;
+	std::string		cpy_line;
+	size_t			line_nb;
+	bool			had_comment;
+
+	line_nb = 1;
+	while (std::getline(std::cin, line))
+	{
+		cpy_line = line;
+		if (check_stdin_end(line))
+			break ;
+		had_comment = remove_comment(line);
+		if (check_push(line, had_comment))
+			create_token(I_PUSH, line);
+		else if (check_pop(line, had_comment))
+			create_token(I_POP, line);
+		else if (check_assert(line, had_comment))
+			create_token(I_ASSERT, line);
+		else if (check_dump(line, had_comment))
+			create_token(I_DUMP, line);
+		else if (check_assert(line, had_comment))
+			create_token(I_ASSERT, line);
+		else if (check_add(line, had_comment))
+			create_token(I_ADD, line);
+		else if (check_sub(line, had_comment))
+			create_token(I_SUB, line);
+		else if (check_sub(line, had_comment))
+			create_token(I_SUB, line);
+		else if (check_div(line, had_comment))
+			create_token(I_DIV, line);
+		else if (check_mul(line, had_comment))
+			create_token(I_MUL, line);
+		else if (check_mod(line, had_comment))
+			create_token(I_MOD, line);
+		else if (check_print(line, had_comment))
+			create_token(I_PRINT, line);
+		else if (check_exit(line, had_comment))
+			create_token(I_EXIT, line);
+		else if (check_empty(line, had_comment))
+			create_token(I_VALID_EMPTY, line);
+		else
+		{
+			this->_has_error = true;
+			std::cout << "Parse Error at line number " << line_nb << ". Line : " << cpy_line << std::endl;
+		}
+		line_nb++;
+	}
+	if (this->_has_exit == false)
+		throw std::runtime_error("Parse Error : No exit !");
+	if (this->_has_error)
+		throw std::runtime_error("Parse Error : Error in program !");
 }
 
 void					Env::parse_from_file(void)
@@ -393,6 +448,17 @@ bool				Env::check_empty(std::string &line, bool has_comment) const
 	if (line.size() != 0)
 		return (false);
 	return (true);
+}
+
+bool				Env::check_stdin_end(std::string &line) const
+{
+	std::regex		got_comment("^;;[\t ]*;[.]*");
+
+	if (std::regex_match(line, got_comment))
+		return (true);
+	if (line.compare(";;") == 0)
+		return (true);
+	return (false);
 }
 
 void				Env::create_token(eInstruction inst, std::string &line)

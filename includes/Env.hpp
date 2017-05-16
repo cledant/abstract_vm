@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 14:07:25 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/16 16:56:09 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/16 18:39:38 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ class Env
 		CommandQueue const				*getQueue(void) const;
 		bool							getHasError(void) const;
 		bool							getHasExit(void) const;
-	//	void							parse_from_stdin(void);
+		void							parse_from_stdin(void);
 		void							parse_from_file(void);
 		void							execute_program(void);
 
@@ -70,6 +70,7 @@ class Env
 											bool has_comment) const;
 		bool							check_empty(std::string &line,
 											bool has_comment) const;
+		bool							check_stdin_end(std::string &line) const;
 		void							create_token(eInstruction inst,
 											std::string &line);
 		void							token_creation_parse(Token &tok,
