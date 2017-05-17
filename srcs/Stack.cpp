@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 17:01:28 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/17 12:20:41 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/17 13:59:05 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void		Stack::assert(eOperandType type, std::string const &value)
 		throw std::runtime_error("Stack : Assert : Value to assert is invalid");
 	}
 	if ((*rit)->getType() != check->getType())
-		throw std::runtime_error("Stack : Assert : Stack top value is different from assert");
+		throw std::runtime_error("Stack : Assert : Stack top value type is different from assert");
 	if (this->assert_value(*rit, check.get()) == false)
 		throw std::runtime_error("Stack : Assert : Stack top value is different from assert");
 }
@@ -134,9 +134,9 @@ void		Stack::do_operation(eOperator op)
 
 	if (this->_stack.size() < 2)
 		throw std::runtime_error("Stack : Not enough elemets in stack for operation");
-	lhs = this->_stack.rbegin();
-	this->_stack.pop_back();
 	rhs = this->_stack.rbegin();
+	this->_stack.pop_back();
+	lhs = this->_stack.rbegin();
 	this->_stack.pop_back();
 	p_lhs = std::unique_ptr<IOperand const>(*lhs);
 	p_rhs = std::unique_ptr<IOperand const>(*rhs);
