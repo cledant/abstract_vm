@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 14:58:08 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/16 19:31:13 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/17 17:41:47 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -325,8 +325,8 @@ bool				Env::check_push(std::string &line, bool has_comment) const
 {
 	std::regex		int_comment("^(push) (int8|int16|int32)\\([-]?\\d+\\)[\t ]*");
 	std::regex		int_no_comment("^(push) (int8|int16|int32)\\([-]?\\d+\\)");
-	std::regex		fp_comment("^(push) (float|double)\\([-]?\\d+(.\\d+)?\\)[\t ]*");
-	std::regex		fp_no_comment("^(push) (float|double)\\([-]?\\d+(.\\d+)?\\)");
+	std::regex		fp_comment("^(push) (float|double)\\([-]?\\d+\\.\\d+\\)[\t ]*");
+	std::regex		fp_no_comment("^(push) (float|double)\\([-]?\\d+\\.\\d+\\)");
 
 	if (has_comment)
 	{
