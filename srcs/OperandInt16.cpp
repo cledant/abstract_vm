@@ -6,13 +6,13 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 11:55:23 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/08 11:49:58 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/17 18:17:38 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "OperandInt16.hpp"
 
-OperandInt16::OperandInt16(void) : _value(0), _str_value("0")
+OperandInt16::OperandInt16(void) : _value(0), _str_value("0"), _precision(0)
 {
 	this->_factory = new OperandFactory();
 }
@@ -22,7 +22,7 @@ OperandInt16::~OperandInt16(void)
 	delete this->_factory;
 }
 
-OperandInt16::OperandInt16(OperandInt16 const &src) : _value(src.getValue()), _str_value(src.toString())
+OperandInt16::OperandInt16(OperandInt16 const &src) : _value(src.getValue()), _str_value(src.toString()), _precision(src.getPrecision())
 {
 	this->_factory = new OperandFactory();
 }
@@ -31,10 +31,11 @@ OperandInt16			&OperandInt16::operator=(OperandInt16 const &rhs)
 {
 	this->_value = rhs.getValue();
 	this->_str_value = rhs.toString().c_str();
-	return(*this);
+	this->_precision = rhs.getPrecision();
+	return (*this);
 }
 
-OperandInt16::OperandInt16(short int const value) : _value(value)
+OperandInt16::OperandInt16(short int const value) : _value(value), _precision(0)
 {
 	this->_factory = new OperandFactory();
 	this->_str_value = std::to_string(static_cast<int>(value));
@@ -42,7 +43,7 @@ OperandInt16::OperandInt16(short int const value) : _value(value)
 
 int						OperandInt16::getPrecision(void) const
 {
-	return (static_cast<int>(this->getType()));
+	return (this->_precision);
 }
 
 eOperandType			OperandInt16::getType(void) const

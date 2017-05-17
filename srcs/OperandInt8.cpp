@@ -6,13 +6,13 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 11:55:23 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/08 12:02:50 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/17 18:23:04 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "OperandInt8.hpp"
 
-OperandInt8::OperandInt8(void) : _value(0), _str_value("0")
+OperandInt8::OperandInt8(void) : _value(0), _str_value("0"), _precision(0)
 {
 	this->_factory = new OperandFactory();
 }
@@ -22,7 +22,7 @@ OperandInt8::~OperandInt8(void)
 	delete this->_factory;
 }
 
-OperandInt8::OperandInt8(OperandInt8 const &src) : _value(src.getValue()), _str_value(src.toString())
+OperandInt8::OperandInt8(OperandInt8 const &src) : _value(src.getValue()), _str_value(src.toString()), _precision(src.getPrecision())
 {
 	this->_factory = new OperandFactory();
 }
@@ -31,10 +31,11 @@ OperandInt8			&OperandInt8::operator=(OperandInt8 const &rhs)
 {
 	this->_value = rhs.getValue();
 	this->_str_value = rhs.toString().c_str();
-	return(*this);
+	this->_precision = rhs.getPrecision();
+	return (*this);
 }
 
-OperandInt8::OperandInt8(char const value) : _value(value)
+OperandInt8::OperandInt8(char const value) : _value(value), _precision(0)
 {
 	this->_factory = new OperandFactory();
 	this->_str_value = std::to_string(static_cast<int>(value));
@@ -42,7 +43,7 @@ OperandInt8::OperandInt8(char const value) : _value(value)
 
 int						OperandInt8::getPrecision(void) const
 {
-	return (static_cast<int>(this->getType()));
+	return (this->_precision);
 }
 
 eOperandType			OperandInt8::getType(void) const

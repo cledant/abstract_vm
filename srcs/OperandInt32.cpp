@@ -6,13 +6,13 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 11:55:23 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/08 11:37:53 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/17 18:27:07 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "OperandInt32.hpp"
 
-OperandInt32::OperandInt32(void) : _value(0), _str_value("0")
+OperandInt32::OperandInt32(void) : _value(0), _str_value("0"), _precision(0)
 {
 	this->_factory = new OperandFactory();
 }
@@ -22,7 +22,7 @@ OperandInt32::~OperandInt32(void)
 	delete this->_factory;
 }
 
-OperandInt32::OperandInt32(OperandInt32 const &src) : _value(src.getValue()), _str_value(src.toString())
+OperandInt32::OperandInt32(OperandInt32 const &src) : _value(src.getValue()), _str_value(src.toString()), _precision(src.getPrecision())
 {
 	this->_factory = new OperandFactory();
 }
@@ -31,10 +31,11 @@ OperandInt32			&OperandInt32::operator=(OperandInt32 const &rhs)
 {
 	this->_value = rhs.getValue();
 	this->_str_value = rhs.toString().c_str();
-	return(*this);
+	this->_precision = rhs.getPrecision();
+	return (*this);
 }
 
-OperandInt32::OperandInt32(int const value) : _value(value)
+OperandInt32::OperandInt32(int const value) : _value(value), _precision(0)
 {
 	this->_factory = new OperandFactory();
 	this->_str_value = std::to_string(value);
@@ -42,7 +43,7 @@ OperandInt32::OperandInt32(int const value) : _value(value)
 
 int						OperandInt32::getPrecision(void) const
 {
-	return (static_cast<int>(this->getType()));
+	return (this->_precision);
 }
 
 eOperandType			OperandInt32::getType(void) const
