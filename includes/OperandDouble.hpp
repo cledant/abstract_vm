@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 10:17:28 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/12 09:38:54 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/17 20:37:12 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <limits>
 # include <cfenv>
 # include <cmath>
+# include <sstream>
+# include <iomanip>
 # include "IOperand.hpp"
 # include "OperandFactory.hpp"
 
@@ -28,7 +30,7 @@ class OperandDouble : public IOperand
 		OperandDouble(OperandDouble const &src);
 		OperandDouble						&operator=(OperandDouble const &rhs);
 
-		OperandDouble(double const value);
+		OperandDouble(double const value, std::string const &str);
 
 		virtual int							getPrecision(void) const;
 		virtual eOperandType				getType(void) const;
@@ -89,9 +91,15 @@ class OperandDouble : public IOperand
 
 	private :
 
+		int									parsePrecision(std::string const
+												&value) const;
+		std::string							convertToString(double value,
+												int precision) const;
+
 		AFactory							*_factory;
 		double								_value;
 		std::string							_str_value;
+		int									_precision;
 };
 
 #endif

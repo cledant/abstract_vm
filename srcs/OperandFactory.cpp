@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 17:23:40 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/06 13:54:27 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/17 20:14:40 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ IOperand const		*OperandFactory::createFloat(std::string const &value) const
 	float		convert;
 
 	convert = std::stof(value, nullptr);
-	return (new OperandFloat(convert));
+	return (new OperandFloat(convert, value));
 }
 
 IOperand const		*OperandFactory::createDouble(std::string const &value) const
@@ -69,7 +69,7 @@ IOperand const		*OperandFactory::createDouble(std::string const &value) const
 	double		convert;
 
 	convert = std::stod(value, nullptr);
-	return (new OperandDouble(convert));
+	return (new OperandDouble(convert, value));
 }
 
 OperandFactory::OverflowException::OverflowException(void)

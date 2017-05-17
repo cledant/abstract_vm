@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 10:17:28 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/17 18:14:25 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/17 19:21:20 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ class OperandInt32 : public IOperand
 		AFactory							*_factory;
 		int									_value;
 		std::string							_str_value;
-		size_t								_precision;
+		int									_precision;
 };
 
 #endif
