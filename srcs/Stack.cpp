@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 17:01:28 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/09 18:26:12 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/17 12:20:41 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,15 @@ void		Stack::print(void)
 	std::cout << dynamic_cast<OperandInt8 const *>(*rit)->getValue() << std::endl;
 }
 
+eOperandType		Stack::resulting_operand_type(IOperand const *lhs,
+						IOperand const *rhs)
+{	
+	if (lhs->getPrecision() > rhs->getPrecision())
+		return (lhs->getType());
+	return (rhs->getType());
+}
+
+
 void		Stack::do_operation(eOperator op)
 {
 	std::vector<IOperand const *>::reverse_iterator		lhs;
@@ -121,6 +130,7 @@ void		Stack::do_operation(eOperator op)
 	std::unique_ptr<IOperand const>						p_rhs;
 	std::unique_ptr<IOperand const>						cast;
 	std::unique_ptr<IOperand const>						result;
+	eOperandType										cast_type;
 
 	if (this->_stack.size() < 2)
 		throw std::runtime_error("Stack : Not enough elemets in stack for operation");
@@ -130,16 +140,17 @@ void		Stack::do_operation(eOperator op)
 	this->_stack.pop_back();
 	p_lhs = std::unique_ptr<IOperand const>(*lhs);
 	p_rhs = std::unique_ptr<IOperand const>(*rhs);
-	if (p_lhs->getType() > p_rhs->getType())
+	cast_type = resulting_operand_type(p_lhs.get(), p_rhs.get());
+	if (p_rhs->getType() != cast_type)
 	{
 		cast = std::unique_ptr<IOperand const>(this->_factory->createOperand(
-					p_lhs->getType(), p_rhs->toString()));
+					cast_type, p_rhs->toString()));
 		p_rhs = std::move(cast);
 	}
-	else if (p_lhs->getType() < p_rhs->getType())
+	else if (p_lhs->getType() != cast_type)
 	{
 		cast = std::unique_ptr<IOperand const>(this->_factory->createOperand(
-					p_rhs->getType(), p_lhs->toString()));
+					cast_type, p_lhs->toString()));
 		p_lhs = std::move(cast);
 	}
 	switch (op)
