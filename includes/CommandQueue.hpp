@@ -14,6 +14,7 @@
 # define COMMANDQUEUE_HPP
 
 # include <deque>
+# include <memory>
 # include "Token.hpp"
 
 class CommandQueue

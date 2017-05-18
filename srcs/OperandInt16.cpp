@@ -69,7 +69,7 @@ IOperand const			*OperandInt16::operator+(IOperand const &rhs) const
 			(this->_value < (std::numeric_limits<short int>::min() -
 			dynamic_cast<const OperandInt16 &>(rhs).getValue())))
 		throw OperandInt16::UnderflowException();
-	result = this->_value + dynamic_cast<const OperandInt16 &>(rhs).getValue();
+	result = static_cast<short int>(this->_value + dynamic_cast<const OperandInt16 &>(rhs).getValue());
 	op_result = this->_factory->createOperand(Int16,
 		std::to_string(static_cast<int>(result)));
 	return (op_result);
@@ -88,7 +88,7 @@ IOperand const			*OperandInt16::operator-(IOperand const &rhs) const
 			(this->_value < (std::numeric_limits<short int>::min() +
 			dynamic_cast<const OperandInt16 &>(rhs).getValue())))
 		throw OperandInt16::UnderflowException();
-	result = this->_value - dynamic_cast<const OperandInt16 &>(rhs).getValue();
+	result = static_cast<short int>(this->_value - dynamic_cast<const OperandInt16 &>(rhs).getValue());
 	op_result = this->_factory->createOperand(Int16,
 		std::to_string(static_cast<int>(result)));
 	return (op_result);
@@ -131,7 +131,7 @@ IOperand const			*OperandInt16::operator*(IOperand const &rhs) const
 			dynamic_cast<const OperandInt16 &>(rhs).getValue() <
 			(std::numeric_limits<short int>::max() / this->_value))
 		throw OperandInt16::OverflowException();
-	result = this->_value * dynamic_cast<const OperandInt16 &>(rhs).getValue();
+	result = static_cast<short int>(this->_value * dynamic_cast<const OperandInt16 &>(rhs).getValue());
 	op_result = this->_factory->createOperand(Int16,
 		std::to_string(static_cast<int>(result)));
 	return (op_result);
@@ -152,7 +152,7 @@ IOperand const			*OperandInt16::operator/(IOperand const &rhs) const
 	else if (dynamic_cast<const OperandInt16 &>(rhs).getValue() == -1 &&
 			this->_value == std::numeric_limits<short int>::min())
 		throw OperandInt16::OverflowException();
-	result = this->_value / dynamic_cast<const OperandInt16 &>(rhs).getValue();
+	result = static_cast<short int>(this->_value / dynamic_cast<const OperandInt16 &>(rhs).getValue());
 	op_result = this->_factory->createOperand(Int16,
 		std::to_string(static_cast<int>(result)));
 	return (op_result);
@@ -173,7 +173,7 @@ IOperand const			*OperandInt16::operator%(IOperand const &rhs) const
 	else if (dynamic_cast<const OperandInt16 &>(rhs).getValue() == -1 &&
 			this->_value == std::numeric_limits<short int>::min())
 		throw OperandInt16::OverflowException();
-	result = this->_value % dynamic_cast<const OperandInt16 &>(rhs).getValue();
+	result = static_cast<short int>(this->_value % dynamic_cast<const OperandInt16 &>(rhs).getValue());
 	op_result = this->_factory->createOperand(Int16,
 		std::to_string(static_cast<int>(result)));
 	return (op_result);

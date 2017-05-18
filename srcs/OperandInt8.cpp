@@ -69,7 +69,7 @@ IOperand const			*OperandInt8::operator+(IOperand const &rhs) const
 			(this->_value < (std::numeric_limits<char>::min() -
 			dynamic_cast<const OperandInt8 &>(rhs).getValue())))
 		throw OperandInt8::UnderflowException();
-	result = this->_value + dynamic_cast<const OperandInt8 &>(rhs).getValue();
+	result = static_cast<char>(this->_value + dynamic_cast<const OperandInt8 &>(rhs).getValue());
 	op_result = this->_factory->createOperand(Int8,
 		std::to_string(static_cast<int>(result)));
 	return (op_result);
@@ -88,7 +88,7 @@ IOperand const			*OperandInt8::operator-(IOperand const &rhs) const
 			(this->_value < (std::numeric_limits<char>::min() +
 			dynamic_cast<const OperandInt8 &>(rhs).getValue())))
 		throw OperandInt8::UnderflowException();
-	result = this->_value - dynamic_cast<const OperandInt8 &>(rhs).getValue();
+	result = static_cast<char>(this->_value - dynamic_cast<const OperandInt8 &>(rhs).getValue());
 	op_result = this->_factory->createOperand(Int8,
 		std::to_string(static_cast<int>(result)));
 	return (op_result);
@@ -131,7 +131,7 @@ IOperand const			*OperandInt8::operator*(IOperand const &rhs) const
 			dynamic_cast<const OperandInt8 &>(rhs).getValue() <
 			(std::numeric_limits<char>::max() / this->_value))
 		throw OperandInt8::OverflowException();
-	result = this->_value * dynamic_cast<const OperandInt8 &>(rhs).getValue();
+	result = static_cast<char>(this->_value * dynamic_cast<const OperandInt8 &>(rhs).getValue());
 	op_result = this->_factory->createOperand(Int8,
 		std::to_string(static_cast<int>(result)));
 	return (op_result);
@@ -152,7 +152,7 @@ IOperand const			*OperandInt8::operator/(IOperand const &rhs) const
 	else if (dynamic_cast<const OperandInt8 &>(rhs).getValue() == -1 &&
 			this->_value == std::numeric_limits<char>::min())
 		throw OperandInt8::OverflowException();
-	result = this->_value / dynamic_cast<const OperandInt8 &>(rhs).getValue();
+	result = static_cast<char>(this->_value / dynamic_cast<const OperandInt8 &>(rhs).getValue());
 	op_result = this->_factory->createOperand(Int8,
 		std::to_string(static_cast<int>(result)));
 	return (op_result);
@@ -173,7 +173,7 @@ IOperand const			*OperandInt8::operator%(IOperand const &rhs) const
 	else if (dynamic_cast<const OperandInt8 &>(rhs).getValue() == -1 &&
 			this->_value == std::numeric_limits<char>::min())
 		throw OperandInt8::OverflowException();
-	result = this->_value % dynamic_cast<const OperandInt8 &>(rhs).getValue();
+	result = static_cast<char>(this->_value % dynamic_cast<const OperandInt8 &>(rhs).getValue());
 	op_result = this->_factory->createOperand(Int8,
 		std::to_string(static_cast<int>(result)));
 	return (op_result);
