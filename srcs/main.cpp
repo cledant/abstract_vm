@@ -19,7 +19,7 @@ static int		from_stdin(void)
 	try
 	{
 		env.reset(new Env());
-		env->parse_from_stdin();
+		env->parse();
 		env->execute_program();
 	}
 	catch (std::exception	&e)
@@ -40,7 +40,7 @@ static int		from_file(int argc, char **argv)
 		try
 		{
 			env.reset(new Env(argv[c]));
-			env->parse_from_file();
+			env->parse();
 			env->execute_program();
 		}
 		catch (std::exception	&e)
