@@ -1,0 +1,8 @@
+push double(1.0)
+push double(3.0)
+div
+push double(3.0)
+mul
+assert double(0.9)
+dump
+exit

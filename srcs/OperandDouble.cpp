@@ -44,7 +44,7 @@ OperandDouble::OperandDouble(double const value, std::string const &str) : _valu
 
 int						OperandDouble::getPrecision(void) const
 {
-	return (static_cast<int>(this->getType()));
+	return (this->_precision);
 }
 
 eOperandType			OperandDouble::getType(void) const
