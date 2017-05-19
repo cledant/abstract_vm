@@ -6,7 +6,7 @@
 #    By: cledant <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/11/26 10:40:13 by cledant           #+#    #+#              #
-#    Updated: 2017/05/16 19:52:15 by cledant          ###   ########.fr        #
+#    Updated: 2017/05/19 19:48:53 by cledant          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ INCLUDES = ./includes
 
 SRCS  = AFactory.cpp AStack.cpp CommandQueue.cpp Env.cpp OperandDouble.cpp \
 		OperandFactory.cpp OperandFloat.cpp OperandInt16.cpp OperandInt32.cpp \
-		OperandInt8.cpp Parser.cpp Stack.cpp Token.cpp main.cpp
+		OperandInt8.cpp Parser.cpp Stack.cpp Token.cpp GeneralException.cpp main.cpp
 
 SRCS_PATH = ./srcs
 

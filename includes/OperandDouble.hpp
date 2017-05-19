@@ -19,6 +19,7 @@
 # include <sstream>
 # include <iomanip>
 # include "IOperand.hpp"
+# include "GeneralException.hpp"
 # include "OperandFactory.hpp"
 
 class OperandDouble : public IOperand
@@ -44,7 +45,7 @@ class OperandDouble : public IOperand
 
 		virtual std::string const			&toString(void) const;
 
-		class	OverflowException : public std::overflow_error
+		class	OverflowException : public GeneralException
 		{
 			public :
 
@@ -52,7 +53,7 @@ class OperandDouble : public IOperand
 				virtual ~OverflowException(void) throw();
 		};
 
-		class	UnderflowException : public std::underflow_error
+		class	UnderflowException : public GeneralException
 		{
 			public :
 
@@ -60,7 +61,7 @@ class OperandDouble : public IOperand
 				virtual ~UnderflowException(void) throw();
 		};
 
-		class	DivideByZeroException : public std::invalid_argument
+		class	DivideByZeroException : public GeneralException
 		{
 			public :
 

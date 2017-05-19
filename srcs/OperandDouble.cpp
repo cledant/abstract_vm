@@ -203,25 +203,27 @@ std::string				OperandDouble::convertToString(double value,
 	return (conv);
 }
 
-
-OperandDouble::OverflowException::OverflowException(void) : std::overflow_error("OperandDouble : This operation would cause an overflow !")
+OperandDouble::OverflowException::OverflowException(void)
 {
+	this->_msg = "Runtime Exception : OperandDouble : This operation would cause an overflow !";
 }
 
 OperandDouble::OverflowException::~OverflowException(void) throw()
 {
 }
 
-OperandDouble::UnderflowException::UnderflowException(void) : std::underflow_error("OperandDouble : This operation would cause an underflow !")
+OperandDouble::UnderflowException::UnderflowException(void)
 {
+	this->_msg = "Runtime Exception : OperandDouble : This operation would cause an underflow !";
 }
 
 OperandDouble::UnderflowException::~UnderflowException(void) throw()
 {
 }
 
-OperandDouble::DivideByZeroException::DivideByZeroException(void) : std::invalid_argument("OpeandDouble : This operation would cause a division by zero !")
+OperandDouble::DivideByZeroException::DivideByZeroException(void)
 {
+		this->_msg = "Runtime Exception : OperandDouble : This operation would cause a division by zero !";
 }
 
 OperandDouble::DivideByZeroException::~DivideByZeroException(void) throw()
