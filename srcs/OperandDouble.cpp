@@ -204,84 +204,26 @@ std::string				OperandDouble::convertToString(double value,
 }
 
 
-OperandDouble::OverflowException::OverflowException(void)
+OperandDouble::OverflowException::OverflowException(void) : std::overflow_error("OperandDouble : This operation would cause an overflow !")
 {
-	this->_msg = "This operation would cause an overflow !";
 }
 
 OperandDouble::OverflowException::~OverflowException(void) throw()
 {
 }
 
-OperandDouble::OverflowException::OverflowException(OverflowException const &src)
+OperandDouble::UnderflowException::UnderflowException(void) : std::underflow_error("OperandDouble : This operation would cause an underflow !")
 {
-	this->_msg = src._msg.c_str();
-}
-
-OperandDouble::OverflowException		&OperandDouble::OverflowException::operator=(
-										OverflowException const &rhs)
-{	
-	this->_msg = rhs._msg.c_str();
-	return (*this);
-}
-
-const char						*OperandDouble::OverflowException::what(void)
-									const throw()
-{
-	return (this->_msg.c_str());
-}
-
-OperandDouble::UnderflowException::UnderflowException(void)
-{
-	this->_msg = "This operation would cause an underflow !";
 }
 
 OperandDouble::UnderflowException::~UnderflowException(void) throw()
 {
 }
 
-OperandDouble::UnderflowException::UnderflowException(UnderflowException const &src)
+OperandDouble::DivideByZeroException::DivideByZeroException(void) : std::invalid_argument("OpeandDouble : This operation would cause a division by zero !")
 {
-	this->_msg = src._msg.c_str();
-}
-
-OperandDouble::UnderflowException	&OperandDouble::UnderflowException::operator=(
-										UnderflowException const &rhs)
-{	
-	this->_msg = rhs._msg.c_str();
-	return (*this);
-}
-
-const char						*OperandDouble::UnderflowException::what(void)
-									const throw()
-{
-	return (this->_msg.c_str());
-}
-
-OperandDouble::DivideByZeroException::DivideByZeroException(void)
-{
-	this->_msg = "This operation would cause a division by zero !";
 }
 
 OperandDouble::DivideByZeroException::~DivideByZeroException(void) throw()
 {
-}
-
-OperandDouble::DivideByZeroException::DivideByZeroException(DivideByZeroException
-		const &src)
-{
-	this->_msg = src._msg.c_str();
-}
-
-OperandDouble::DivideByZeroException	&OperandDouble::DivideByZeroException::
-										operator=(DivideByZeroException const &rhs)
-{	
-	this->_msg = rhs._msg.c_str();
-	return (*this);
-}
-
-const char						*OperandDouble::DivideByZeroException::what(void)
-									const throw()
-{
-	return (this->_msg.c_str());
 }
