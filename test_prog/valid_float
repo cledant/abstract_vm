@@ -1,0 +1,4 @@
+push float(42)
+push float(42.)
+push float(42.0)
+exit

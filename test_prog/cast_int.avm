@@ -1,0 +1,5 @@
+push int8(10)
+push int16(256)
+div
+assert int16(25)
+exit

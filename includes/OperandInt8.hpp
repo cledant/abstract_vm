@@ -15,6 +15,7 @@
 
 # include <limits>
 # include "IOperand.hpp"
+# include "GeneralException.hpp"
 # include "OperandFactory.hpp"
 
 class OperandInt8 : public IOperand
@@ -40,49 +41,28 @@ class OperandInt8 : public IOperand
 
 		virtual std::string const			&toString(void) const;
 
-		class	OverflowException : public std::exception
+		class	OverflowException : public GeneralException
 		{
 			public :
 
 				explicit OverflowException(void);
 				virtual ~OverflowException(void) throw();
-				OverflowException(OverflowException const &src);
-				OverflowException &operator=(OverflowException const &rhs);
-				virtual const char		*what(void) const throw();
-
-			protected :
-
-				std::string		_msg;
 		};
 
-		class	UnderflowException : public std::exception
+		class	UnderflowException : public GeneralException
 		{
 			public :
 
 				explicit UnderflowException(void);
 				virtual ~UnderflowException(void) throw();
-				UnderflowException(UnderflowException const &src);
-				UnderflowException &operator=(UnderflowException const &rhs);
-				virtual const char		*what(void) const throw();
-
-			protected :
-
-				std::string		_msg;
 		};
 
-		class	DivideByZeroException : public std::exception
+		class	DivideByZeroException : public GeneralException
 		{
 			public :
 
 				explicit DivideByZeroException(void);
 				virtual ~DivideByZeroException(void) throw();
-				DivideByZeroException(DivideByZeroException const &src);
-				DivideByZeroException &operator=(DivideByZeroException const &rhs);
-				virtual const char		*what(void) const throw();
-
-			protected :
-
-				std::string		_msg;
 		};
 
 	private :

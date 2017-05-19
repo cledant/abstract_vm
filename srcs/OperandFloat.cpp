@@ -205,82 +205,27 @@ std::string				OperandFloat::convertToString(float value,
 
 OperandFloat::OverflowException::OverflowException(void)
 {
-	this->_msg = "This operation would cause an overflow !";
+	this->_msg = "Runtime Exception : OperandFloat : This operation would cause an overflow !";
 }
 
 OperandFloat::OverflowException::~OverflowException(void) throw()
 {
 }
 
-OperandFloat::OverflowException::OverflowException(OverflowException const &src)
-{
-	this->_msg = src._msg.c_str();
-}
-
-OperandFloat::OverflowException		&OperandFloat::OverflowException::operator=(
-										OverflowException const &rhs)
-{	
-	this->_msg = rhs._msg.c_str();
-	return (*this);
-}
-
-const char						*OperandFloat::OverflowException::what(void)
-									const throw()
-{
-	return (this->_msg.c_str());
-}
-
 OperandFloat::UnderflowException::UnderflowException(void)
 {
-	this->_msg = "This operation would cause an underflow !";
+	this->_msg = "Runtime Exception : OperandFloat : This operation would cause an underflow !";
 }
 
 OperandFloat::UnderflowException::~UnderflowException(void) throw()
 {
 }
 
-OperandFloat::UnderflowException::UnderflowException(UnderflowException const &src)
-{
-	this->_msg = src._msg.c_str();
-}
-
-OperandFloat::UnderflowException	&OperandFloat::UnderflowException::operator=(
-										UnderflowException const &rhs)
-{	
-	this->_msg = rhs._msg.c_str();
-	return (*this);
-}
-
-const char						*OperandFloat::UnderflowException::what(void)
-									const throw()
-{
-	return (this->_msg.c_str());
-}
-
 OperandFloat::DivideByZeroException::DivideByZeroException(void)
 {
-	this->_msg = "This operation would cause a division by zero !";
+		this->_msg = "Runtime Exception : OperandFloat : This operation would cause a division by zero !";
 }
 
 OperandFloat::DivideByZeroException::~DivideByZeroException(void) throw()
 {
-}
-
-OperandFloat::DivideByZeroException::DivideByZeroException(DivideByZeroException
-		const &src)
-{
-	this->_msg = src._msg.c_str();
-}
-
-OperandFloat::DivideByZeroException	&OperandFloat::DivideByZeroException::
-										operator=(DivideByZeroException const &rhs)
-{	
-	this->_msg = rhs._msg.c_str();
-	return (*this);
-}
-
-const char						*OperandFloat::DivideByZeroException::what(void)
-									const throw()
-{
-	return (this->_msg.c_str());
 }

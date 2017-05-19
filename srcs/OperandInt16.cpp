@@ -186,82 +186,27 @@ std::string const		&OperandInt16::toString(void) const
 
 OperandInt16::OverflowException::OverflowException(void)
 {
-	this->_msg = "This operation would cause an overflow !";
+	this->_msg = "Runtime Exception : OperandInt16 : This operation would cause an overflow !";
 }
 
 OperandInt16::OverflowException::~OverflowException(void) throw()
 {
 }
 
-OperandInt16::OverflowException::OverflowException(OverflowException const &src)
-{
-	this->_msg = src._msg.c_str();
-}
-
-OperandInt16::OverflowException		&OperandInt16::OverflowException::operator=(
-										OverflowException const &rhs)
-{	
-	this->_msg = rhs._msg.c_str();
-	return (*this);
-}
-
-const char						*OperandInt16::OverflowException::what(void)
-									const throw()
-{
-	return (this->_msg.c_str());
-}
-
 OperandInt16::UnderflowException::UnderflowException(void)
 {
-	this->_msg = "This operation would cause an underflow !";
+	this->_msg = "Runtime Exception : OperandInt16 : This operation would cause an underflow !";
 }
 
 OperandInt16::UnderflowException::~UnderflowException(void) throw()
 {
 }
 
-OperandInt16::UnderflowException::UnderflowException(UnderflowException const &src)
-{
-	this->_msg = src._msg.c_str();
-}
-
-OperandInt16::UnderflowException	&OperandInt16::UnderflowException::operator=(
-										UnderflowException const &rhs)
-{	
-	this->_msg = rhs._msg.c_str();
-	return (*this);
-}
-
-const char						*OperandInt16::UnderflowException::what(void)
-									const throw()
-{
-	return (this->_msg.c_str());
-}
-
 OperandInt16::DivideByZeroException::DivideByZeroException(void)
 {
-	this->_msg = "This operation would cause a division by zero !";
+		this->_msg = "Runtime Exception : OperandInt16 : This operation would cause a division by zero !";
 }
 
 OperandInt16::DivideByZeroException::~DivideByZeroException(void) throw()
 {
-}
-
-OperandInt16::DivideByZeroException::DivideByZeroException(DivideByZeroException
-		const &src)
-{
-	this->_msg = src._msg.c_str();
-}
-
-OperandInt16::DivideByZeroException	&OperandInt16::DivideByZeroException::
-										operator=(DivideByZeroException const &rhs)
-{	
-	this->_msg = rhs._msg.c_str();
-	return (*this);
-}
-
-const char						*OperandInt16::DivideByZeroException::what(void)
-									const throw()
-{
-	return (this->_msg.c_str());
 }
