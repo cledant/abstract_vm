@@ -44,14 +44,6 @@ class Env
 				virtual ~InitFailException(void) throw();
 		};
 
-		class CopyInitFailException : public GeneralException
-		{
-			public :
-
-				explicit CopyInitFailException(void);
-				virtual ~CopyInitFailException(void) throw();
-		};
-
 		class OpenFailException : public GeneralException
 		{
 			public :

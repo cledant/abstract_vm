@@ -35,6 +35,14 @@ class Parser
 		void							parse_from_stdin(void);
 		void							parse_from_file(std::ifstream &ifs);
 
+		class ParsingError : public GeneralException
+		{
+			public :
+
+				explicit ParsingError(void);
+				virtual ~ParsingError(void) throw();
+		};
+
 	private :
 
 		bool							remove_comment(std::string	&line) const;

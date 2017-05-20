@@ -120,7 +120,7 @@ void					Parser::parse_from_stdin(void)
 		std::cout << "Parse Error : No exit !" << std::endl;
 	}
 	if (this->_has_error)
-		throw std::runtime_error("Parse Error : Error in program !");
+		throw Parser::ParsingError();
 }
 
 void					Parser::parse_from_file(std::ifstream &ifs)
@@ -176,7 +176,7 @@ void					Parser::parse_from_file(std::ifstream &ifs)
 		std::cout << "Parse Error : No exit !" << std::endl;
 	}
 	if (this->_has_error)
-		throw std::runtime_error("Parse Error : Error in program !");
+		throw Parser::ParsingError();
 }
 
 
@@ -387,4 +387,13 @@ void				Parser::token_creation_parse(Token &tok, eInstruction inst,
 		end_pos = line.find(")");
 		tok.value = line.substr(begin_pos + 1, end_pos - 1 - begin_pos);
 	}
+}
+
+Parser::ParsingError::ParsingError(void)
+{
+		this->_msg = "Parse error : One or more errors have been detected. Aborting execution !";
+}
+
+Parser::ParsingError::~ParsingError(void) throw()
+{
 }
