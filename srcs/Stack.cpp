@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 17:01:28 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/17 13:59:05 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/20 15:37:23 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void		Stack::push(eOperandType type, std::string const &value)
 {
 	std::unique_ptr<IOperand const>op = nullptr;
 
-	op = std::unique_ptr<IOperand const>(this->_factory->createOperand(type, value));
+	op.reset(this->_factory->createOperand(type, value));
 	this->_stack.push_back(op.get());
 	op.release();
 }
@@ -35,7 +35,7 @@ void		Stack::pop(void)
 	std::vector<IOperand const *>::reverse_iterator		rit;
 
 	if (this->_stack.empty() == true)
-		throw std::runtime_error("Stack : Pop : Stack is empty");
+		throw Stack::EmptyStackException();
 	rit = this->_stack.rbegin();
 	this->_stack.pop_back();
 	delete *rit;
@@ -52,27 +52,27 @@ void		Stack::dump(void)
 void		Stack::assert(eOperandType type, std::string const &value)
 {
 	std::vector<IOperand const *>::reverse_iterator		rit;
-	std::unique_ptr<IOperand const>						check;
+	std::unique_ptr<IOperand const>						check = nullptr;
 
 	if (this->_stack.empty() == true)
-		throw std::runtime_error("Stack : Pop : Stack is empty");
+		throw Stack::EmptyStackException();
 	rit = this->_stack.rbegin();
 	try
 	{
-		check = std::unique_ptr<IOperand const>(this->_factory->createOperand(type, value));
+		check.reset(this->_factory->createOperand(type, value));
 	}
 	catch (OperandFactory::OverflowException &e)
 	{
-		throw std::runtime_error("Stack : Assert : Value to assert is invalid");
+		throw Stack::AssertInvalidValueException();
 	}
 	catch (OperandFactory::UnderflowException &e)
 	{
-		throw std::runtime_error("Stack : Assert : Value to assert is invalid");
+		throw Stack::AssertInvalidValueException();
 	}
 	if ((*rit)->getType() != check->getType())
-		throw std::runtime_error("Stack : Assert : Stack top value type is different from assert");
+		throw Stack::AssertDifferentTypeException();
 	if (this->assert_value(*rit, check.get()) == false)
-		throw std::runtime_error("Stack : Assert : Stack top value is different from assert");
+		throw Stack::AssertDifferentValueException();
 }
 
 void		Stack::add(void)
@@ -103,19 +103,18 @@ void		Stack::mod(void)
 void		Stack::print(void)
 {
 	std::vector<IOperand const *>::reverse_iterator		rit;
-	std::unique_ptr<IOperand const>						check;
 
 	if (this->_stack.empty() == true)
-		throw std::runtime_error("Stack : Print : Stack is empty");
+		throw Stack::EmptyStackException();
 	rit = this->_stack.rbegin();
 	if ((*rit)->getType() != Int8)
-		throw std::runtime_error("Stack : Print : Not a Int8");
+		throw Stack::NotInt8Exception();
 	std::cout << dynamic_cast<OperandInt8 const *>(*rit)->getValue() << std::endl;
 }
 
 eOperandType		Stack::resulting_operand_type(IOperand const *lhs,
 						IOperand const *rhs)
-{	
+{
 	if (lhs->getPrecision() > rhs->getPrecision())
 		return (lhs->getType());
 	return (rhs->getType());
@@ -133,42 +132,40 @@ void		Stack::do_operation(eOperator op)
 	eOperandType										cast_type;
 
 	if (this->_stack.size() < 2)
-		throw std::runtime_error("Stack : Not enough elemets in stack for operation");
+		throw Stack::NotEnoughElementException();
 	rhs = this->_stack.rbegin();
 	this->_stack.pop_back();
 	lhs = this->_stack.rbegin();
 	this->_stack.pop_back();
-	p_lhs = std::unique_ptr<IOperand const>(*lhs);
-	p_rhs = std::unique_ptr<IOperand const>(*rhs);
+	p_lhs.reset(*lhs);
+	p_rhs.reset(*rhs);
 	cast_type = resulting_operand_type(p_lhs.get(), p_rhs.get());
 	if (p_rhs->getType() != cast_type)
 	{
-		cast = std::unique_ptr<IOperand const>(this->_factory->createOperand(
-					cast_type, p_rhs->toString()));
+		cast.reset(this->_factory->createOperand(cast_type, p_rhs->toString()));
 		p_rhs = std::move(cast);
 	}
 	else if (p_lhs->getType() != cast_type)
 	{
-		cast = std::unique_ptr<IOperand const>(this->_factory->createOperand(
-					cast_type, p_lhs->toString()));
+		cast.reset(this->_factory->createOperand(cast_type, p_lhs->toString()));
 		p_lhs = std::move(cast);
 	}
 	switch (op)
 	{
 		case ADD :
-			result = std::unique_ptr<IOperand const>(*p_lhs + *p_rhs);
+			result.reset(*p_lhs + *p_rhs);
 			break ;
 		case SUB :
-			result = std::unique_ptr<IOperand const>(*p_lhs - *p_rhs);
+			result.reset(*p_lhs - *p_rhs);
 			break ;
 		case MUL :
-			result = std::unique_ptr<IOperand const>(*p_lhs * *p_rhs);
+			result.reset(*p_lhs * *p_rhs);
 			break ;
 		case DIV :
-			result = std::unique_ptr<IOperand const>(*p_lhs / *p_rhs);
+			result.reset(*p_lhs / *p_rhs);
 			break ;
 		case MOD :
-			result = std::unique_ptr<IOperand const>(*p_lhs % *p_rhs);
+			result.reset(*p_lhs % *p_rhs);
 			break ;
 	}
 	this->_stack.push_back(result.get());
@@ -208,4 +205,58 @@ bool		Stack::assert_value(IOperand const *lhs, IOperand const *rhs)
 			return (true);
 	}
 	return (false);
+}
+
+Stack::EmptyStackException::EmptyStackException(void)
+{
+		this->_msg = "Runtime Exception : Stack : Stack is empty !";
+}
+
+Stack::EmptyStackException::~EmptyStackException(void) throw()
+{
+}
+
+Stack::NotEnoughElementException::NotEnoughElementException(void)
+{
+		this->_msg = "Runtime Exception : Stack : Not enough elements in stack for requested instruction !";
+}
+
+Stack::NotEnoughElementException::~NotEnoughElementException(void) throw()
+{
+}
+
+Stack::AssertInvalidValueException::AssertInvalidValueException(void)
+{
+		this->_msg = "Runtime Exception : Stack : Value to assert is invalid !";
+}
+
+Stack::AssertInvalidValueException::~AssertInvalidValueException(void) throw()
+{
+}
+
+Stack::AssertDifferentTypeException::AssertDifferentTypeException(void)
+{
+		this->_msg = "Runtime Exception : Stack : Top stack type is different from assert !";
+}
+
+Stack::AssertDifferentTypeException::~AssertDifferentTypeException(void) throw()
+{
+}
+
+Stack::AssertDifferentValueException::AssertDifferentValueException(void)
+{
+		this->_msg = "Runtime Exception : Stack : Top stack value is different from assert !";
+}
+
+Stack::AssertDifferentValueException::~AssertDifferentValueException(void) throw()
+{
+}
+
+Stack::NotInt8Exception::NotInt8Exception(void)
+{
+		this->_msg = "Runtime Exception : Stack : Top stack type is not printable !";
+}
+
+Stack::NotInt8Exception::~NotInt8Exception(void) throw()
+{
 }

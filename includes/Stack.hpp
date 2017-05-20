@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 12:38:57 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/17 12:19:01 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/20 15:41:24 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,54 @@ class Stack : public AStack
 		virtual void				div(void);
 		virtual void				mod(void);
 		virtual void				print(void);
+
+	class EmptyStackException : public GeneralException
+	{
+		public :
+
+			explicit EmptyStackException(void);
+			virtual ~EmptyStackException(void) throw();
+	};
+
+	class NotEnoughElementException : public GeneralException
+	{
+		public :
+
+			explicit NotEnoughElementException(void);
+			virtual ~NotEnoughElementException(void) throw();
+	};
+
+	class AssertInvalidValueException : public GeneralException
+	{
+		public :
+
+			explicit AssertInvalidValueException(void);
+			virtual ~AssertInvalidValueException(void) throw();
+	};
+
+	class AssertDifferentTypeException : public GeneralException
+	{
+		public :
+
+			explicit AssertDifferentTypeException(void);
+			virtual ~AssertDifferentTypeException(void) throw();
+	};
+
+	class AssertDifferentValueException : public GeneralException
+	{
+		public :
+
+			explicit AssertDifferentValueException(void);
+			virtual ~AssertDifferentValueException(void) throw();
+	};
+
+	class NotInt8Exception : public GeneralException
+	{
+		public :
+
+			explicit NotInt8Exception(void);
+			virtual ~NotInt8Exception(void) throw();
+	};
 
 	private :
 

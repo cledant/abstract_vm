@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/12 10:52:24 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/16 16:19:10 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/20 14:47:05 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,6 @@ std::deque<Token const *> const		&CommandQueue::getStack(void) const
 {
 	return (this->_stack);
 }
-
-#include <iostream>
 
 void								CommandQueue::push(Token const &tok)
 {
