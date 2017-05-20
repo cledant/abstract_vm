@@ -15,6 +15,7 @@
 
 # include <deque>
 # include <memory>
+# include "GeneralException.hpp"
 # include "Token.hpp"
 
 class CommandQueue
@@ -31,6 +32,14 @@ class CommandQueue
 		void									pop(void);
 		Token const								*getFront(void);
 		bool									isEmpty(void);
+
+		class EmptyQueueException : public GeneralException
+		{
+			public :
+
+				explicit EmptyQueueException(void);
+				virtual ~EmptyQueueException(void) throw();
+		};
 
 	private :
 

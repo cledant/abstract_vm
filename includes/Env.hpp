@@ -36,6 +36,30 @@ class Env
 		void							parse(void);
 		void							execute_program(void);
 
+		class InitFailException : public GeneralException
+		{
+			public :
+
+				explicit InitFailException(void);
+				virtual ~InitFailException(void) throw();
+		};
+
+		class CopyInitFailException : public GeneralException
+		{
+			public :
+
+				explicit CopyInitFailException(void);
+				virtual ~CopyInitFailException(void) throw();
+		};
+
+		class OpenFailException : public GeneralException
+		{
+			public :
+
+				explicit OpenFailException(void);
+				virtual ~OpenFailException(void) throw();
+		};
+
 	private :
 
 		std::ifstream					_ifs;

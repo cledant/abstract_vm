@@ -78,11 +78,20 @@ void								CommandQueue::pop(void)
 Token const							*CommandQueue::getFront(void)
 {
 	if (this->_stack.empty() == true)
-		throw std::runtime_error("CommandQueue is Empty");
+		throw CommandQueue::EmptyQueueException();
 	return (this->_stack.front());
 }
 
 bool								CommandQueue::isEmpty(void)
 {
 	return (this->_stack.empty());
+}
+
+CommandQueue::EmptyQueueException::EmptyQueueException(void)
+{
+		this->_msg = "Runtime error : CommandQueue : Queue is Empty";
+}
+
+CommandQueue::EmptyQueueException::~EmptyQueueException(void) throw()
+{
 }

@@ -23,7 +23,7 @@ Env::Env(void) : _ifs(nullptr), _stack(nullptr), _parser(nullptr), _filename(nul
 	{
 		delete this->_stack;
 		delete this->_parser;
-		throw std::runtime_error("Env : Init failed !");
+		throw Env::InitFailException();
 	}
 }
 
@@ -38,7 +38,7 @@ Env::~Env(void)
 Env::Env(Env const &src) : _ifs(src.getFilename()), _stack(nullptr), _parser(nullptr), _filename(nullptr), _orig(src.getOrigin())
 {
 	if (this->_orig == FILES && !(this->_ifs))
-		throw std::runtime_error("Env : Can't open file !");
+		throw OpenFailException();
 	try
 	{
 		this->_stack = new Stack();
@@ -47,9 +47,11 @@ Env::Env(Env const &src) : _ifs(src.getFilename()), _stack(nullptr), _parser(nul
 	}
 	catch (std::exception &e)
 	{
+		if (this->_ifs)
+			this->_ifs.close();
 		delete this->_stack;
 		delete this->_parser;
-		throw std::runtime_error("Env : Copy Init failed !");
+		throw Env::InitFailException();
 	}
 }
 
@@ -64,7 +66,7 @@ Env									&Env::operator=(Env const &rhs)
 	{
 		this->_ifs.open(this->_filename);
 		if (!(this->_ifs))
-			throw std::runtime_error("Env : Can't open file !");
+			throw OpenFailException();
 	}
 	return (*this);
 }
@@ -72,7 +74,7 @@ Env									&Env::operator=(Env const &rhs)
 Env::Env(char const *file) : _ifs(file), _stack(nullptr), _parser(nullptr), _filename(file), _orig(FILES)
 {
 	if (!(this->_ifs))
-		throw std::runtime_error("Env : Can't open file !");
+			throw OpenFailException();
 	try
 	{
 		this->_stack = new Stack();
@@ -80,9 +82,11 @@ Env::Env(char const *file) : _ifs(file), _stack(nullptr), _parser(nullptr), _fil
 	}
 	catch (std::exception &e)
 	{
+		if (this->_ifs)
+			this->_ifs.close();
 		delete _stack;
 		delete _parser;
-		throw std::runtime_error("Env : Init failed !");
+		throw Env::InitFailException();
 	}
 }
 
@@ -162,4 +166,22 @@ void					Env::execute_program(void)
 		}
 		this->_parser->getQueue()->pop();
 	}
+}
+
+Env::InitFailException::InitFailException(void)
+{
+		this->_msg = "Error : Initialisation failed !";
+}
+
+Env::InitFailException::~InitFailException(void) throw()
+{
+}
+
+Env::OpenFailException::OpenFailException(void)
+{
+		this->_msg = "Error : Can't open file !";
+}
+
+Env::OpenFailException::~OpenFailException(void) throw()
+{
 }
