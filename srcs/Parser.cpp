@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 16:22:19 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/11 16:23:21 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/22 20:00:14 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ CommandQueue			*Parser::getQueue(void) const
 	return  (this->_cqueue);
 }
 
-void					Parser::parse_from_stdin(void)
+void					Parser::parse(std::istream &ifs, eOrigin from)
 {
 	std::string		line;
 	std::string		cpy_line;
@@ -65,16 +65,18 @@ void					Parser::parse_from_stdin(void)
 	bool			had_comment;
 
 	line_nb = 1;
-	while (std::getline(std::cin, line))
+	while (std::getline(ifs, line))
 	{
 		cpy_line = line;
-		if (check_stdin_end(line))
+		if (from == KEYBOARD && check_stdin_end(line))
 		{
 			this->_has_stdin_exit = true;
 			break ;
 		}
 		had_comment = remove_comment(line);
-		if (check_push(line, had_comment))
+		check_line(line, line_nb, had_comment);
+		line_nb++;
+/*		if (check_push(line, had_comment))
 			create_token(I_PUSH, line);
 		else if (check_pop(line, had_comment))
 			create_token(I_POP, line);
@@ -106,10 +108,9 @@ void					Parser::parse_from_stdin(void)
 		{
 			this->_has_error = true;
 			std::cout << "Parse Error at line number " << line_nb << ". Line : " << cpy_line << std::endl;
-		}
-		line_nb++;
+		}*/
 	}
-	if (this->_has_stdin_exit == false)
+	if (from == KEYBOARD && this->_has_stdin_exit == false)
 	{
 		this->_has_error = true;
 		std::cout << "Parse Error : No exit sequence from stdin !" << std::endl;
@@ -123,62 +124,32 @@ void					Parser::parse_from_stdin(void)
 		throw Parser::ParsingError();
 }
 
-void					Parser::parse_from_file(std::ifstream &ifs)
+void				Parser::check_line(std::string &line, size_t line_nb,
+						bool had_comment)
 {
-	std::string		line;
-	std::string		cpy_line;
-	size_t			line_nb;
-	bool			had_comment;
+//	eInstruction		instr;
 
-	line_nb = 1;
-	while (std::getline(ifs, line))
-	{
-		cpy_line = line;
-		had_comment = remove_comment(line);
-		if (check_push(line, had_comment))
-			create_token(I_PUSH, line);
-		else if (check_pop(line, had_comment))
-			create_token(I_POP, line);
-		else if (check_assert(line, had_comment))
-			create_token(I_ASSERT, line);
-		else if (check_dump(line, had_comment))
-			create_token(I_DUMP, line);
-		else if (check_assert(line, had_comment))
-			create_token(I_ASSERT, line);
-		else if (check_add(line, had_comment))
-			create_token(I_ADD, line);
-		else if (check_sub(line, had_comment))
-			create_token(I_SUB, line);
-		else if (check_sub(line, had_comment))
-			create_token(I_SUB, line);
-		else if (check_div(line, had_comment))
-			create_token(I_DIV, line);
-		else if (check_mul(line, had_comment))
-			create_token(I_MUL, line);
-		else if (check_mod(line, had_comment))
-			create_token(I_MOD, line);
-		else if (check_print(line, had_comment))
-			create_token(I_PRINT, line);
-		else if (check_exit(line, had_comment))
-			create_token(I_EXIT, line);
-		else if (check_empty(line, had_comment))
-			create_token(I_VALID_EMPTY, line);
-		else
-		{
-			this->_has_error = true;
-			std::cout << "Parse Error at line number " << line_nb << ". Line : " << cpy_line << std::endl;
-		}
-		line_nb++;
-	}
-	if (this->_has_exit == false)
-	{
-		this->_has_error = true;
-		std::cout << "Parse Error : No exit !" << std::endl;
-	}
-	if (this->_has_error)
-		throw Parser::ParsingError();
+	if (!check_instruction(line, line_nb))
+		return ;
+	std::cout << "OK" << std::endl;
+	(void)had_comment;
+//	instr = parse_instruction_type(line);
 }
 
+bool				Parser::check_instruction(std::string &line, size_t line_nb)
+{
+	std::regex		instr_no_arg("^(pop|dump|add|sub|mul|div|mod|print|exit)[\t ]*$");
+	std::regex		instr_with_arg()
+
+	if (!std::regex_search(line, instr))
+	{
+		std::cout << "Error on line " << line_nb << " : Unknown instruction !" <<
+			std::endl;
+		this->_has_error = true;
+		return (false);
+	}
+	return (true);
+}
 
 bool				Parser::remove_comment(std::string &line) const
 {

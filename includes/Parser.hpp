@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 10:40:39 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/11 16:29:58 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/22 19:40:39 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@ class Parser
 		bool							getHasStdinExit(void) const;
 		CommandQueue					*getQueue(void) const;
 
-		void							parse_from_stdin(void);
-		void							parse_from_file(std::ifstream &ifs);
+		void							parse(std::istream &ifs, eOrigin from);
 
 		class ParsingError : public GeneralException
 		{
@@ -46,6 +45,10 @@ class Parser
 	private :
 
 		bool							remove_comment(std::string	&line) const;
+		void							check_line(std::string &line, size_t line_nb,
+											bool had_comment);
+		bool							check_instruction(std::string &line,
+											size_t line_nb);
 		bool							check_push(std::string &line,
 											bool has_comment) const;
 		bool							check_pop(std::string &line,

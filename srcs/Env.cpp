@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 14:58:08 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/17 17:41:47 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/22 13:57:48 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,9 +113,9 @@ AStack const			*Env::getStack(void) const
 void					Env::parse(void)
 {
 	if (this->_orig == KEYBOARD)
-		this->_parser->parse_from_stdin();
+		this->_parser->parse(std::cin, KEYBOARD);
 	else
-		this->_parser->parse_from_file(this->_ifs);
+		this->_parser->parse(this->_ifs, FILES);
 }
 
 void					Env::execute_program(void)
