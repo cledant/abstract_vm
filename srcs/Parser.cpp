@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 16:22:19 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/23 10:12:35 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/23 13:49:16 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void					Parser::parse(std::istream &ifs, eOrigin from)
 			break ;
 		}
 		had_comment = remove_comment(line);
-		check_line(line, line_nb, had_comment);
+		parse_line(line, line_nb, had_comment);
 		line_nb++;
 /*		if (check_push(line, had_comment))
 			create_token(I_PUSH, line);
@@ -127,13 +127,10 @@ void					Parser::parse(std::istream &ifs, eOrigin from)
 void				Parser::check_line(std::string &line, size_t line_nb,
 						bool had_comment)
 {
-//	eInstruction		instr;
-
 	if (!check_instruction(line, line_nb))
 		return ;
 	std::cout << "OK" << std::endl;
 	(void)had_comment;
-//	instr = parse_instruction_type(line);
 }
 
 bool				Parser::check_instruction(std::string &line, size_t line_nb)
@@ -155,6 +152,38 @@ bool				Parser::check_instruction(std::string &line, size_t line_nb)
 	return (true);
 }
 
+void				Parser::parse_line(std::string &line, size_t line_nb,
+						bool had_comment)
+{
+	size_t	c = 0;
+	std::vector<std::regex> reg_array = {std::regex("^[\t ]*push\\b.*"),
+		std::regex("^[\t ]*pop\\b.*"), std::regex("^[\t ]*dump\\b.*"),
+		std::regex("^[\t ]*assert\\b.*"), std::regex("^[\t ]*add\\b.*"),
+		std::regex("^[\t ]*sub\\b.*"), std::regex("^[\t ]*mul\\b.*"),
+		std::regex("^[\t ]*div\\b.*"), std::regex("^[\t ]*mod\\b.*"),
+		std::regex("^[\t ]*print\\b.*"), std::regex("^[\t ]*exit\\b.*"),
+		std::regex("[\t ]*$")};
+	bool	(Parser::*fct[12])(std::string &, bool) = {&Parser::check_push,
+				&Parser::check_pop, &Parser::check_dump, &Parser::check_assert,
+				&Parser::check_add, &Parser::check_sub, &Parser::check_mul,
+				&Parser::check_div, &Parser::check_mod, &Parser::check_print,
+				&Parser::check_exit, &Parser::check_empty};
+	std::vector<std::regex>::iterator		it;
+
+	for(it = reg_array.begin(); it != reg_array.end(); ++it)
+	{
+		if (std::regex_match(line, *it))
+		{
+			(this->*fct[c])(line, had_comment);
+			return ;
+		}
+		++c;
+	}
+	std::cout << "Error on line " << line_nb << " : Unknown instruction !" <<
+		std::endl;
+	this->_has_error = true;
+}
+
 bool				Parser::remove_comment(std::string &line) const
 {
 	size_t		pos;
@@ -166,7 +195,7 @@ bool				Parser::remove_comment(std::string &line) const
 	return (true);
 }
 
-bool				Parser::check_push(std::string &line, bool has_comment) const
+bool				Parser::check_push(std::string &line, bool has_comment)
 {
 	std::regex		int_comment("^(push) (int8|int16|int32)\\([-]?\\d+\\)[\t ]*");
 	std::regex		int_no_comment("^(push) (int8|int16|int32)\\([-]?\\d+\\)");
@@ -190,7 +219,7 @@ bool				Parser::check_push(std::string &line, bool has_comment) const
 	return (false);
 }
 
-bool				Parser::check_pop(std::string &line, bool has_comment) const
+bool				Parser::check_pop(std::string &line, bool has_comment)
 {
 	std::regex		got_comment("^(pop)[\t ]*");
 	std::regex		no_comment("^(pop)");
@@ -200,7 +229,7 @@ bool				Parser::check_pop(std::string &line, bool has_comment) const
 	return (std::regex_match(line, no_comment));
 }
 
-bool				Parser::check_dump(std::string &line, bool has_comment) const
+bool				Parser::check_dump(std::string &line, bool has_comment)
 {
 	std::regex		got_comment("^(dump)[\t ]*");
 	std::regex		no_comment("^(dump)");
@@ -210,7 +239,7 @@ bool				Parser::check_dump(std::string &line, bool has_comment) const
 	return (std::regex_match(line, no_comment));
 }
 
-bool				Parser::check_assert(std::string &line, bool has_comment) const
+bool				Parser::check_assert(std::string &line, bool has_comment)
 {
 	std::regex		int_comment("^(assert) (int8|int16|int32)\\([-]?\\d+\\)[\t ]*");
 	std::regex		int_no_comment("^(assert) (int8|int16|int32)\\([-]?\\d+\\)");
@@ -234,7 +263,7 @@ bool				Parser::check_assert(std::string &line, bool has_comment) const
 	return (false);
 }
 
-bool				Parser::check_add(std::string &line, bool has_comment) const
+bool				Parser::check_add(std::string &line, bool has_comment)
 {
 	std::regex		got_comment("^(add)[\t ]*");
 	std::regex		no_comment("^(add)");
@@ -244,7 +273,7 @@ bool				Parser::check_add(std::string &line, bool has_comment) const
 	return (std::regex_match(line, no_comment));
 }
 
-bool				Parser::check_sub(std::string &line, bool has_comment) const
+bool				Parser::check_sub(std::string &line, bool has_comment)
 {
 	std::regex		got_comment("^(sub)[\t ]*");
 	std::regex		no_comment("^(sub)");
@@ -254,7 +283,7 @@ bool				Parser::check_sub(std::string &line, bool has_comment) const
 	return (std::regex_match(line, no_comment));
 }
 
-bool				Parser::check_mul(std::string &line, bool has_comment) const
+bool				Parser::check_mul(std::string &line, bool has_comment)
 {
 	std::regex		got_comment("^(mul)[\t ]*");
 	std::regex		no_comment("^(mul)");
@@ -264,7 +293,7 @@ bool				Parser::check_mul(std::string &line, bool has_comment) const
 	return (std::regex_match(line, no_comment));
 }
 
-bool				Parser::check_div(std::string &line, bool has_comment) const
+bool				Parser::check_div(std::string &line, bool has_comment)
 {
 	std::regex		got_comment("^(div)[\t ]*");
 	std::regex		no_comment("^(div)");
@@ -274,7 +303,7 @@ bool				Parser::check_div(std::string &line, bool has_comment) const
 	return (std::regex_match(line, no_comment));
 }
 
-bool				Parser::check_mod(std::string &line, bool has_comment) const
+bool				Parser::check_mod(std::string &line, bool has_comment)
 {
 	std::regex		got_comment("^(mod)[\t ]*");
 	std::regex		no_comment("^(mod)");
@@ -284,7 +313,7 @@ bool				Parser::check_mod(std::string &line, bool has_comment) const
 	return (std::regex_match(line, no_comment));
 }
 
-bool				Parser::check_print(std::string &line, bool has_comment) const
+bool				Parser::check_print(std::string &line, bool has_comment)
 {
 	std::regex		got_comment("^(print)[\t ]*");
 	std::regex		no_comment("^(print)");
@@ -294,17 +323,29 @@ bool				Parser::check_print(std::string &line, bool has_comment) const
 	return (std::regex_match(line, no_comment));
 }
 
-bool				Parser::check_exit(std::string &line, bool has_comment) const
+bool				Parser::check_exit(std::string &line, bool has_comment)
 {
 	std::regex		got_comment("^(exit)[\t ]*");
 	std::regex		no_comment("^(exit)");
 
 	if (has_comment)
-		return (std::regex_match(line, got_comment));
-	return (std::regex_match(line, no_comment));
+	{
+		if (std::regex_match(line, got_comment))
+		{
+			create_token(I_EXIT, line);
+			return (true);
+		}
+		return (false);
+	}
+	if (std::regex_match(line, no_comment))
+	{
+		create_token(I_EXIT, line);
+		return (true);
+	}
+	return (false);
 }
 
-bool				Parser::check_empty(std::string &line, bool has_comment) const
+bool				Parser::check_empty(std::string &line, bool has_comment)
 {
 	std::regex		got_comment("^[\t ]*");
 

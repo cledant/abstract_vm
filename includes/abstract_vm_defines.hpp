@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 09:55:37 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/16 16:54:51 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/23 11:21:44 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,18 +33,18 @@ enum		eOperator
 
 enum		eInstruction
 {
-	I_PUSH,
-	I_POP,
-	I_DUMP,
-	I_ASSERT,
-	I_ADD,
-	I_SUB,
-	I_MUL,
-	I_DIV,
-	I_MOD,
-	I_PRINT,
-	I_EXIT,
-	I_VALID_EMPTY,
+	I_PUSH = 0,
+	I_POP = 1,
+	I_DUMP = 2,
+	I_ASSERT = 3,
+	I_ADD = 4,
+	I_SUB = 5,
+	I_MUL = 6,
+	I_DIV = 7,
+	I_MOD = 8,
+	I_PRINT = 9,
+	I_EXIT = 10,
+	I_VALID_EMPTY = 11,
 };
 
 enum		eOrigin

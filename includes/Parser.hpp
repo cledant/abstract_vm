@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 10:40:39 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/22 19:40:39 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/23 13:47:27 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <fstream>
 # include <iostream>
+# include <vector>
 # include <regex>
 # include "CommandQueue.hpp"
 
@@ -44,35 +45,39 @@ class Parser
 
 	private :
 
-		bool							remove_comment(std::string	&line) const;
+		void							parse_line(std::string &line, size_t line_nb,
+											bool had_comment);
+
 		void							check_line(std::string &line, size_t line_nb,
 											bool had_comment);
 		bool							check_instruction(std::string &line,
 											size_t line_nb);
+
+		bool							remove_comment(std::string	&line) const;
 		bool							check_push(std::string &line,
-											bool has_comment) const;
+											bool has_comment);
 		bool							check_pop(std::string &line,
-											bool has_comment) const;
+											bool has_comment);
 		bool							check_dump(std::string &line,
-											bool has_comment) const;
+											bool has_comment);
 		bool							check_assert(std::string &line,
-											bool has_comment) const;
+											bool has_comment);
 		bool							check_add(std::string &line,
-											bool has_comment) const;
+											bool has_comment);
 		bool							check_sub(std::string &line,
-											bool has_comment) const;
+											bool has_comment);
 		bool							check_mul(std::string &line,
-											bool has_comment) const;
+											bool has_comment);
 		bool							check_div(std::string &line,
-											bool has_comment) const;
+											bool has_comment);
 		bool							check_mod(std::string &line,
-											bool has_comment) const;
+											bool has_comment);
 		bool							check_print(std::string &line,
-											bool has_comment) const;
+											bool has_comment);
 		bool							check_exit(std::string &line,
-											bool has_comment) const;
+											bool has_comment);
 		bool							check_empty(std::string &line,
-											bool has_comment) const;
+											bool has_comment);
 		bool							check_stdin_end(std::string &line) const;
 		void							create_token(eInstruction inst,
 											std::string &line);
