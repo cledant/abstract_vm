@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 16:22:19 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/23 16:42:32 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/23 18:25:35 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,10 +137,10 @@ bool				Parser::remove_comment(std::string &line) const
 bool				Parser::check_push(std::string &line, size_t line_nb,
 						bool has_comment)
 {
-	std::regex		int_comment("^(push) (int8|int16|int32)\\([-]?\\d+\\)[\t ]*");
-	std::regex		int_no_comment("^(push) (int8|int16|int32)\\([-]?\\d+\\)");
-	std::regex		fp_comment("^(push) (float|double)\\([-]?\\d+(.\\d+)?\\)[\t ]*");
-	std::regex		fp_no_comment("^(push) (float|double)\\([-]?\\d+(.\\d+)?\\)");
+	std::regex	int_comment("^(push) (int8|int16|int32)\\([-]?\\d+\\)[\t ]*");
+	std::regex	int_no_comment("^(push) (int8|int16|int32)\\([-]?\\d+\\)");
+	std::regex	fp_comment("^(push) (float|double)\\([-]?\\d+(\\.\\d+)\\)[\t ]*");
+	std::regex	fp_no_comment("^(push) (float|double)\\([-]?\\d+(\\.\\d+)\\)");
 
 	if (has_comment)
 	{
@@ -221,8 +221,8 @@ bool				Parser::check_assert(std::string &line, size_t line_nb,
 {
 	std::regex		int_comment("^(assert) (int8|int16|int32)\\([-]?\\d+\\)[\t ]*");
 	std::regex		int_no_comment("^(assert) (int8|int16|int32)\\([-]?\\d+\\)");
-	std::regex		fp_comment("^(assert) (float|double)\\([-]?\\d+(.\\d+)?\\)[\t ]*");
-	std::regex		fp_no_comment("^(assert) (float|double)\\([-]?\\d+(.\\d+)?\\)");
+	std::regex		fp_comment("^(assert) (float|double)\\([-]?\\d+(\\.\\d+)\\)[\t ]*");
+	std::regex		fp_no_comment("^(assert) (float|double)\\([-]?\\d+(\\.\\d+)\\)");
 
 	if (has_comment)
 	{

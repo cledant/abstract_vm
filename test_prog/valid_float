@@ -1,4 +1,13 @@
 push float(42)
 push float(42.)
+push float(42d)
+push float(42s4)
+push float(42.f4)
 push float(42.0)
+push float(-42)
+push float(-42.)
+push float(-42s4)
+push float(-42.f4)
+push float(-42.0)
+dump
 exit
