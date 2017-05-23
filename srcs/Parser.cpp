@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 16:22:19 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/22 20:00:14 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/23 10:12:35 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,10 +138,14 @@ void				Parser::check_line(std::string &line, size_t line_nb,
 
 bool				Parser::check_instruction(std::string &line, size_t line_nb)
 {
-	std::regex		instr_no_arg("^(pop|dump|add|sub|mul|div|mod|print|exit)[\t ]*$");
-	std::regex		instr_with_arg()
+	std::regex	instr("^[\t ]*(push|pop|dump|assert|add|sub|mul|div|mod|print|exit)\\b.*");
+	std::regex	empty("^[\t ]*$");
 
-	if (!std::regex_search(line, instr))
+	if (line.size() == 0)
+		return (true);
+	else if (std::regex_match(line, empty))
+		return (true);
+	else if (!std::regex_match(line, instr))
 	{
 		std::cout << "Error on line " << line_nb << " : Unknown instruction !" <<
 			std::endl;
