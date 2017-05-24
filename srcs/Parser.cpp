@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 16:22:19 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/24 11:40:29 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/24 11:50:27 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,28 +204,14 @@ bool				Parser::check_dump(std::string &line, bool has_comment)
 
 bool				Parser::check_assert(std::string &line, bool has_comment)
 {
-	std::regex		int_comment("^(assert) (int8|int16|int32)\\([-]?\\d+\\)[\t ]*");
-	std::regex		int_no_comment("^(assert) (int8|int16|int32)\\([-]?\\d+\\)");
-	std::regex		fp_comment("^(assert) (float|double)\\([-]?\\d+(\\.\\d+)\\)[\t ]*");
-	std::regex		fp_no_comment("^(assert) (float|double)\\([-]?\\d+(\\.\\d+)\\)");
-
-	if (has_comment)
+	std::regex	syntax_comment("^(assert) (.+)\\(.+\\)[\t ]*");
+	std::regex	syntax_no_comment("^(assert) (.+)\\(.+\\)");
+	if ((has_comment && std::regex_match(line, syntax_comment)) ||
+				std::regex_match(line, syntax_no_comment))
 	{
-		if (std::regex_match(line, int_comment) ||
-				std::regex_match(line, fp_comment))
-		{
-			this->create_token(I_ASSERT, line);
-			return (true);
-		}
-	}
-	else
-	{
-		if (std::regex_match(line, int_no_comment) ||
-				std::regex_match(line, fp_no_comment))
-		{
-			this->create_token(I_ASSERT, line);
-			return (true);
-		}
+		if (this->create_token(I_ASSERT, line))
+			return (false);
+		return (true);
 	}
 	this->_has_error = true;
 	std::cout << "Error on line " << this->_line_nb << " : Syntax Error !" <<
