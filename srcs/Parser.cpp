@@ -6,13 +6,13 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 16:22:19 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/23 18:25:35 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/24 11:40:29 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Parser.hpp"
 
-Parser::Parser(void) : _cqueue(nullptr), _has_error(false), _has_exit(false), _has_stdin_exit(false)
+Parser::Parser(void) : _cqueue(nullptr), _has_error(false), _has_exit(false), _has_stdin_exit(false), _line_nb(1)
 {
 	this->_cqueue = new CommandQueue();
 }
@@ -22,18 +22,19 @@ Parser::~Parser(void)
 	delete this->_cqueue;
 }
 
-Parser::Parser(Parser const &src) : _cqueue(nullptr), _has_error(src.getHasError()), _has_exit(src.getHasExit()), _has_stdin_exit(src.getHasStdinExit())
+Parser::Parser(Parser const &src) : _cqueue(nullptr), _has_error(src.getHasError()), _has_exit(src.getHasExit()), _has_stdin_exit(src.getHasStdinExit()), _line_nb(src.getCurrentLine())
 {
 	this->_cqueue = new CommandQueue();
 	this->_cqueue = src.getQueue();
 }
 
-Parser									&Parser::operator=(Parser const &rhs)
+Parser					&Parser::operator=(Parser const &rhs)
 {
 	this->_cqueue = rhs.getQueue();
 	this->_has_error = rhs.getHasError();
 	this->_has_exit = rhs.getHasExit();
 	this->_has_stdin_exit = rhs.getHasStdinExit();
+	this->_line_nb = rhs.getCurrentLine();
 	return (*this);
 }
 
@@ -57,14 +58,17 @@ CommandQueue			*Parser::getQueue(void) const
 	return  (this->_cqueue);
 }
 
+size_t					Parser::getCurrentLine(void) const
+{
+	return (this->_line_nb);
+}
+
 void					Parser::parse(std::istream &ifs, eOrigin from)
 {
 	std::string		line;
 	std::string		cpy_line;
-	size_t			line_nb;
 	bool			had_comment;
 
-	line_nb = 1;
 	while (std::getline(ifs, line))
 	{
 		cpy_line = line;
@@ -74,8 +78,8 @@ void					Parser::parse(std::istream &ifs, eOrigin from)
 			break ;
 		}
 		had_comment = this->remove_comment(line);
-		this->parse_line(line, line_nb, had_comment);
-		line_nb++;
+		this->parse_line(line, had_comment);
+		this->_line_nb++;
 	}
 	if (from == KEYBOARD && this->_has_stdin_exit == false)
 	{
@@ -91,8 +95,7 @@ void					Parser::parse(std::istream &ifs, eOrigin from)
 		throw Parser::ParsingError();
 }
 
-void				Parser::parse_line(std::string &line, size_t line_nb,
-						bool had_comment)
+void				Parser::parse_line(std::string &line, bool had_comment)
 {
 	size_t	c = 0;
 	std::vector<std::regex> reg_array = {std::regex("^[\t ]*push\\b.*"),
@@ -102,7 +105,7 @@ void				Parser::parse_line(std::string &line, size_t line_nb,
 		std::regex("^[\t ]*div\\b.*"), std::regex("^[\t ]*mod\\b.*"),
 		std::regex("^[\t ]*print\\b.*"), std::regex("^[\t ]*exit\\b.*"),
 		std::regex("[\t ]*$")};
-	bool	(Parser::*fct[12])(std::string &, size_t, bool) =
+	bool	(Parser::*fct[12])(std::string &, bool) =
 				{&Parser::check_push, &Parser::check_pop, &Parser::check_dump,
 				&Parser::check_assert, &Parser::check_add, &Parser::check_sub,
 				&Parser::check_mul, &Parser::check_div, &Parser::check_mod,
@@ -113,12 +116,12 @@ void				Parser::parse_line(std::string &line, size_t line_nb,
 	{
 		if (std::regex_match(line, *it))
 		{
-			(this->*fct[c])(line, line_nb, had_comment);
+			(this->*fct[c])(line, had_comment);
 			return ;
 		}
 		++c;
 	}
-	std::cout << "Error on line " << line_nb << " : Unknown instruction !" <<
+	std::cout << "Error on line " << this->_line_nb << " : Unknown instruction !" <<
 		std::endl;
 	this->_has_error = true;
 }
@@ -134,40 +137,24 @@ bool				Parser::remove_comment(std::string &line) const
 	return (true);
 }
 
-bool				Parser::check_push(std::string &line, size_t line_nb,
-						bool has_comment)
+bool				Parser::check_push(std::string &line, bool has_comment)
 {
-	std::regex	int_comment("^(push) (int8|int16|int32)\\([-]?\\d+\\)[\t ]*");
-	std::regex	int_no_comment("^(push) (int8|int16|int32)\\([-]?\\d+\\)");
-	std::regex	fp_comment("^(push) (float|double)\\([-]?\\d+(\\.\\d+)\\)[\t ]*");
-	std::regex	fp_no_comment("^(push) (float|double)\\([-]?\\d+(\\.\\d+)\\)");
-
-	if (has_comment)
+	std::regex	syntax_comment("^(push) (.+)\\(.+\\)[\t ]*");
+	std::regex	syntax_no_comment("^(push) (.+)\\(.+\\)");
+	if ((has_comment && std::regex_match(line, syntax_comment)) ||
+				std::regex_match(line, syntax_no_comment))
 	{
-		if (std::regex_match(line, int_comment) ||
-				std::regex_match(line, fp_comment))
-		{
-			this->create_token(I_PUSH, line);
-			return (true);
-		}
-	}
-	else
-	{
-		if (std::regex_match(line, int_no_comment) ||
-				std::regex_match(line, fp_no_comment))
-		{
-			this->create_token(I_PUSH, line);
-			return (true);
-		}
+		if (this->create_token(I_PUSH, line))
+			return (false);
+		return (true);
 	}
 	this->_has_error = true;
-	std::cout << "Error on line " << line_nb << " : Syntax Error !" <<
+	std::cout << "Error on line " << this->_line_nb << " : Syntax Error !" <<
 		std::endl;
 	return (false);
 }
 
-bool				Parser::check_pop(std::string &line, size_t line_nb,
-						bool has_comment)
+bool				Parser::check_pop(std::string &line, bool has_comment)
 {
 	std::regex		got_comment("^(pop)[\t ]*");
 	std::regex		no_comment("^(pop)");
@@ -186,13 +173,12 @@ bool				Parser::check_pop(std::string &line, size_t line_nb,
 		return (true);
 	}
 	this->_has_error = true;
-	std::cout << "Error on line " << line_nb << " : Syntax Error !" <<
+	std::cout << "Error on line " << this->_line_nb << " : Syntax Error !" <<
 		std::endl;
 	return (false);
 }
 
-bool				Parser::check_dump(std::string &line, size_t line_nb,
-						bool has_comment)
+bool				Parser::check_dump(std::string &line, bool has_comment)
 {
 	std::regex		got_comment("^(dump)[\t ]*");
 	std::regex		no_comment("^(dump)");
@@ -211,13 +197,12 @@ bool				Parser::check_dump(std::string &line, size_t line_nb,
 		return (true);
 	}
 	this->_has_error = true;
-	std::cout << "Error on line " << line_nb << " : Syntax Error !" <<
+	std::cout << "Error on line " << this->_line_nb << " : Syntax Error !" <<
 		std::endl;
 	return (false);
 }
 
-bool				Parser::check_assert(std::string &line, size_t line_nb,
-						bool has_comment)
+bool				Parser::check_assert(std::string &line, bool has_comment)
 {
 	std::regex		int_comment("^(assert) (int8|int16|int32)\\([-]?\\d+\\)[\t ]*");
 	std::regex		int_no_comment("^(assert) (int8|int16|int32)\\([-]?\\d+\\)");
@@ -243,13 +228,12 @@ bool				Parser::check_assert(std::string &line, size_t line_nb,
 		}
 	}
 	this->_has_error = true;
-	std::cout << "Error on line " << line_nb << " : Syntax Error !" <<
+	std::cout << "Error on line " << this->_line_nb << " : Syntax Error !" <<
 		std::endl;
 	return (false);
 }
 
-bool				Parser::check_add(std::string &line, size_t line_nb,
-						bool has_comment)
+bool				Parser::check_add(std::string &line, bool has_comment)
 {
 	std::regex		got_comment("^(add)[\t ]*");
 	std::regex		no_comment("^(add)");
@@ -268,13 +252,12 @@ bool				Parser::check_add(std::string &line, size_t line_nb,
 		return (true);
 	}
 	this->_has_error = true;
-	std::cout << "Error on line " << line_nb << " : Syntax Error !" <<
+	std::cout << "Error on line " << this->_line_nb << " : Syntax Error !" <<
 		std::endl;
 	return (false);
 }
 
-bool				Parser::check_sub(std::string &line, size_t line_nb,
-						bool has_comment)
+bool				Parser::check_sub(std::string &line, bool has_comment)
 {
 	std::regex		got_comment("^(sub)[\t ]*");
 	std::regex		no_comment("^(sub)");
@@ -293,13 +276,12 @@ bool				Parser::check_sub(std::string &line, size_t line_nb,
 		return (true);
 	}
 	this->_has_error = true;
-	std::cout << "Error on line " << line_nb << " : Syntax Error !" <<
+	std::cout << "Error on line " << this->_line_nb << " : Syntax Error !" <<
 		std::endl;
 	return (false);
 }
 
-bool				Parser::check_mul(std::string &line, size_t line_nb,
-						bool has_comment)
+bool				Parser::check_mul(std::string &line, bool has_comment)
 {
 	std::regex		got_comment("^(mul)[\t ]*");
 	std::regex		no_comment("^(mul)");
@@ -318,13 +300,12 @@ bool				Parser::check_mul(std::string &line, size_t line_nb,
 		return (true);
 	}
 	this->_has_error = true;
-	std::cout << "Error on line " << line_nb << " : Syntax Error !" <<
+	std::cout << "Error on line " << this->_line_nb << " : Syntax Error !" <<
 		std::endl;
 	return (false);
 }
 
-bool				Parser::check_div(std::string &line, size_t line_nb,
-						bool has_comment)
+bool				Parser::check_div(std::string &line, bool has_comment)
 {
 	std::regex		got_comment("^(div)[\t ]*");
 	std::regex		no_comment("^(div)");
@@ -343,13 +324,12 @@ bool				Parser::check_div(std::string &line, size_t line_nb,
 		return (true);
 	}
 	this->_has_error = true;
-	std::cout << "Error on line " << line_nb << " : Syntax Error !" <<
+	std::cout << "Error on line " << this->_line_nb << " : Syntax Error !" <<
 		std::endl;
 	return (false);
 }
 
-bool				Parser::check_mod(std::string &line, size_t line_nb,
-						bool has_comment)
+bool				Parser::check_mod(std::string &line, bool has_comment)
 {
 	std::regex		got_comment("^(mod)[\t ]*");
 	std::regex		no_comment("^(mod)");
@@ -368,13 +348,12 @@ bool				Parser::check_mod(std::string &line, size_t line_nb,
 		return (true);
 	}
 	this->_has_error = true;
-	std::cout << "Error on line " << line_nb << " : Syntax Error !" <<
+	std::cout << "Error on line " << this->_line_nb << " : Syntax Error !" <<
 		std::endl;
 	return (false);
 }
 
-bool				Parser::check_print(std::string &line, size_t line_nb,
-						bool has_comment)
+bool				Parser::check_print(std::string &line, bool has_comment)
 {
 	std::regex		got_comment("^(print)[\t ]*");
 	std::regex		no_comment("^(print)");
@@ -393,13 +372,12 @@ bool				Parser::check_print(std::string &line, size_t line_nb,
 		return (true);
 	}
 	this->_has_error = true;
-	std::cout << "Error on line " << line_nb << " : Syntax Error !" <<
+	std::cout << "Error on line " << this->_line_nb << " : Syntax Error !" <<
 		std::endl;
 	return (false);
 }
 
-bool				Parser::check_exit(std::string &line, size_t line_nb,
-						bool has_comment)
+bool				Parser::check_exit(std::string &line, bool has_comment)
 {
 	std::regex		got_comment("^(exit)[\t ]*");
 	std::regex		no_comment("^(exit)");
@@ -418,13 +396,12 @@ bool				Parser::check_exit(std::string &line, size_t line_nb,
 		return (true);
 	}
 	this->_has_error = true;
-	std::cout << "Error on line " << line_nb << " : Syntax Error !" <<
+	std::cout << "Error on line " << this->_line_nb << " : Syntax Error !" <<
 		std::endl;
 	return (false);
 }
 
-bool				Parser::check_empty(std::string &line, size_t line_nb,
-						bool has_comment)
+bool				Parser::check_empty(std::string &line, bool has_comment)
 {
 	std::regex		got_comment("^[\t ]*");
 
@@ -442,7 +419,7 @@ bool				Parser::check_empty(std::string &line, size_t line_nb,
 		return (true);
 	}
 	this->_has_error = true;
-	std::cout << "Error on line " << line_nb << " : Syntax Error !" <<
+	std::cout << "Error on line " << this->_line_nb << " : Syntax Error !" <<
 		std::endl;
 	return (false);
 }
@@ -458,28 +435,40 @@ bool				Parser::check_stdin_end(std::string &line) const
 	return (false);
 }
 
-void				Parser::create_token(eInstruction inst, std::string &line)
+bool				Parser::create_token(eInstruction inst, std::string &line)
 {
 	Token		tok;
 
-	this->token_creation_parse(tok, inst, line);
+	if (!this->token_creation_parse(tok, inst, line))
+		return (false);
 	if (inst == I_EXIT)
 		this->_has_exit = true;
 	this->_cqueue->push(tok);
+	return (true);
 }
 
-void				Parser::token_creation_parse(Token &tok, eInstruction inst,
+bool				Parser::token_creation_parse(Token &tok, eInstruction inst,
 						std::string &line)
 {
 	size_t		op_pos;
 	size_t		begin_pos;
 	size_t		end_pos;
+	std::regex	int_check("^(push|assert) (int8|int16|int32)\\([-]?\\d+\\)[\t ]*");
+	std::regex	fp_check("^(push|assert) (float|double)\\([-]?\\d+(\\.\\d+)\\)[\t ]*");
+	std::regex	lexical_check("^(push|assert) (int8|int16|int32|float|double)\\(.+\\)[\t ]*");
 
 	tok.inst = inst;
 	tok.type = Int8;
 	tok.value = "0";
 	if (inst == I_PUSH || inst == I_ASSERT)
 	{
+		if (!std::regex_match(line, lexical_check))
+		{
+			this->_has_error = true;
+			std::cout << "Error on line " << this->_line_nb << " : Lexical Error !"
+				<< std::endl;
+			return (false);
+		}
 		if ((op_pos = line.find("int8")) != std::string::npos)
 			tok.type = Int8;
 		else if ((op_pos = line.find("int16")) != std::string::npos)
@@ -490,10 +479,31 @@ void				Parser::token_creation_parse(Token &tok, eInstruction inst,
 			tok.type = Float;
 		else if ((op_pos = line.find("double")) != std::string::npos)
 			tok.type = Double;
+		if (tok.type == Int8 || tok.type == Int16 || tok.type == Int32)
+		{
+			if (!std::regex_match(line, int_check))
+			{
+				this->_has_error = true;
+				std::cout << "Error on line " << this->_line_nb <<
+					" : Syntax Error !" << std::endl;
+				return (false);
+			}
+		}
+		else if (tok.type == Float || tok.type == Double)
+		{
+			if (!std::regex_match(line, fp_check))
+			{
+				this->_has_error = true;
+				std::cout << "Error on line " << this->_line_nb <<
+					" : Syntax Error !" << std::endl;
+				return (false);
+			}
+		}
 		begin_pos = line.find("(");
 		end_pos = line.find(")");
 		tok.value = line.substr(begin_pos + 1, end_pos - 1 - begin_pos);
 	}
+	return (true);
 }
 
 Parser::ParsingError::ParsingError(void)
