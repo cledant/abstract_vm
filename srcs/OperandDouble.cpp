@@ -6,13 +6,13 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 11:55:23 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/17 20:37:26 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/24 13:59:19 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "OperandDouble.hpp"
 
-OperandDouble::OperandDouble(void) : _value(0.0), _str_value("0.0"), _precision(1)
+OperandDouble::OperandDouble(void) : _value(0.0), _str_value("0.00000"), _precision(5)
 {
 	this->_factory = new OperandFactory();
 }
@@ -38,8 +38,13 @@ OperandDouble			&OperandDouble::operator=(OperandDouble const &rhs)
 OperandDouble::OperandDouble(double const value, std::string const &str) : _value(value)
 {
 	this->_factory = new OperandFactory();
-	this->_precision = this->parsePrecision(str);
-	this->_str_value = str;
+	if ((this->_precision = this->parsePrecision(str)) >= 5)
+		this->_str_value = str;
+	else
+	{
+		this->_precision = 5;
+		this->_str_value = this->convertToString(this->_value, this->_precision);
+	}
 }
 
 int						OperandDouble::getPrecision(void) const
