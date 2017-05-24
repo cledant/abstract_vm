@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 17:01:28 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/20 15:37:23 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/24 17:11:39 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,8 @@ void		Stack::print(void)
 	rit = this->_stack.rbegin();
 	if ((*rit)->getType() != Int8)
 		throw Stack::NotInt8Exception();
-	std::cout << dynamic_cast<OperandInt8 const *>(*rit)->getValue() << std::endl;
+	if (std::isprint(dynamic_cast<OperandInt8 const *>(*rit)->getValue()))
+		std::cout << dynamic_cast<OperandInt8 const *>(*rit)->getValue();
 }
 
 eOperandType		Stack::resulting_operand_type(IOperand const *lhs,
