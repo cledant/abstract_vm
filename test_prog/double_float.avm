@@ -1,5 +1,0 @@
-push double(10.0)
-push float(3.0)
-div
-dump
-exit

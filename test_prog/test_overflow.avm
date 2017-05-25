@@ -1,8 +1,0 @@
-push int16(64)
-push int16(-64)
-mul
-dump
-push int16(10)
-mul
-dump
-exit

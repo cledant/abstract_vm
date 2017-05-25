@@ -1,9 +1,0 @@
-push float(1.0)
-push float(3.0)
-div
-push float(3.0)
-dump
-mul
-;assert float(0.9)
-dump
-exit

@@ -1,7 +1,0 @@
-push int8(64)       ;comment
-push int16(-64)			;comment
-push int32(64)
-push float(-64.42);comment
-push double(64.42)
-dump		;comment
-exit

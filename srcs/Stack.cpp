@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 17:01:28 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/24 17:11:39 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/25 12:50:51 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ void		Stack::print(void)
 eOperandType		Stack::resulting_operand_type(IOperand const *lhs,
 						IOperand const *rhs)
 {
-	if (lhs->getPrecision() > rhs->getPrecision())
+	if (lhs->getType() > rhs->getType())
 		return (lhs->getType());
 	return (rhs->getType());
 }

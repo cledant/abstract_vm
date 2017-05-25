@@ -1,5 +1,0 @@
-push float(0.0000001)
-push float(0.00005)
-add
-dump
-exit
