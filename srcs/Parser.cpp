@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 16:22:19 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/24 11:50:27 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/26 15:34:11 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,7 @@ void					Parser::parse(std::istream &ifs, eOrigin from)
 		std::cout << "Parse Error : No exit sequence from stdin !" << std::endl;
 	}
 	if (this->_has_exit == false)
-	{
-		this->_has_error = true;
-		std::cout << "Parse Error : No exit !" << std::endl;
-	}
+		std::cout << "Parse Error : No exit parsed !" << std::endl;
 	if (this->_has_error)
 		throw Parser::ParsingError();
 }

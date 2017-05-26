@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 14:58:08 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/22 13:57:48 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/26 16:35:35 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,8 @@ void					Env::execute_program(void)
 	Token const			*queue_tok = nullptr;
 	bool				loop = true;
 
+	if (this->_parser->getQueue()->isEmpty() == true)
+		throw Env::NoInstructionException();
 	while (this->_parser->getQueue()->isEmpty() == false && loop == true)
 	{
 		queue_tok = this->_parser->getQueue()->getFront();
@@ -166,6 +168,8 @@ void					Env::execute_program(void)
 		}
 		this->_parser->getQueue()->pop();
 	}
+	if (this->_parser->getHasExit() == false)
+		throw Env::NoExitException();
 }
 
 Env::InitFailException::InitFailException(void)
@@ -183,5 +187,23 @@ Env::OpenFailException::OpenFailException(void)
 }
 
 Env::OpenFailException::~OpenFailException(void) throw()
+{
+}
+
+Env::NoExitException::NoExitException(void)
+{
+		this->_msg = "Error : No exit instruction !";
+}
+
+Env::NoExitException::~NoExitException(void) throw()
+{
+}
+
+Env::NoInstructionException::NoInstructionException(void)
+{
+		this->_msg = "Error : No Instruction to execute !";
+}
+
+Env::NoInstructionException::~NoInstructionException(void) throw()
 {
 }

@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 14:07:25 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/16 19:25:13 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/26 16:34:59 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,22 @@ class Env
 
 				explicit OpenFailException(void);
 				virtual ~OpenFailException(void) throw();
+		};
+
+		class NoExitException : public GeneralException
+		{
+			public :
+
+				explicit NoExitException(void);
+				virtual ~NoExitException(void) throw();
+		};
+
+		class NoInstructionException : public GeneralException
+		{
+			public :
+
+				explicit NoInstructionException(void);
+				virtual ~NoInstructionException(void) throw();
 		};
 
 	private :
