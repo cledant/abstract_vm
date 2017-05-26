@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 16:22:19 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/26 15:34:11 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/26 16:55:21 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -391,14 +391,10 @@ bool				Parser::check_empty(std::string &line, bool has_comment)
 	if (has_comment)
 	{
 		if (std::regex_match(line, got_comment))
-		{
-			this->create_token(I_VALID_EMPTY, line);
 			return (true);
-		}
 	}
 	else if (line.size() == 0)
 	{
-		this->create_token(I_VALID_EMPTY, line);
 		return (true);
 	}
 	this->_has_error = true;
