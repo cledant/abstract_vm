@@ -6,7 +6,7 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 10:17:28 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/17 19:21:03 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/26 11:42:07 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ class OperandInt16 : public IOperand
 		virtual int							getPrecision(void) const;
 		virtual eOperandType				getType(void) const;
 		short int							getValue(void) const;
+		size_t								getZeroPrecision(void) const;
 
 		virtual IOperand const				*operator+(IOperand const &rhs) const;
 		virtual IOperand const				*operator-(IOperand const &rhs) const;
@@ -64,13 +65,13 @@ class OperandInt16 : public IOperand
 				explicit DivideByZeroException(void);
 				virtual ~DivideByZeroException(void) throw();
 		};
-		
+
 	private :
 
 		AFactory							*_factory;
 		short int							_value;
 		std::string							_str_value;
-		int									_precision;
+		size_t								_zeroprecision;
 };
 
 #endif

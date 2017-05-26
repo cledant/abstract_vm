@@ -6,13 +6,13 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 11:55:23 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/17 18:17:38 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/26 10:52:19 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "OperandInt16.hpp"
 
-OperandInt16::OperandInt16(void) : _value(0), _str_value("0"), _precision(0)
+OperandInt16::OperandInt16(void) : _value(0), _str_value("0"), _zeroprecision(0)
 {
 	this->_factory = new OperandFactory();
 }
@@ -22,7 +22,7 @@ OperandInt16::~OperandInt16(void)
 	delete this->_factory;
 }
 
-OperandInt16::OperandInt16(OperandInt16 const &src) : _value(src.getValue()), _str_value(src.toString()), _precision(src.getPrecision())
+OperandInt16::OperandInt16(OperandInt16 const &src) : _value(src.getValue()), _str_value(src.toString()), _zeroprecision(src.getZeroPrecision())
 {
 	this->_factory = new OperandFactory();
 }
@@ -31,11 +31,11 @@ OperandInt16			&OperandInt16::operator=(OperandInt16 const &rhs)
 {
 	this->_value = rhs.getValue();
 	this->_str_value = rhs.toString().c_str();
-	this->_precision = rhs.getPrecision();
+	this->_zeroprecision = rhs.getZeroPrecision();
 	return (*this);
 }
 
-OperandInt16::OperandInt16(short int const value) : _value(value), _precision(0)
+OperandInt16::OperandInt16(short int const value) : _value(value), _zeroprecision(0)
 {
 	this->_factory = new OperandFactory();
 	this->_str_value = std::to_string(static_cast<int>(value));
@@ -43,7 +43,7 @@ OperandInt16::OperandInt16(short int const value) : _value(value), _precision(0)
 
 int						OperandInt16::getPrecision(void) const
 {
-	return (this->_precision);
+	return (static_cast<int>(this->getType()));
 }
 
 eOperandType			OperandInt16::getType(void) const
@@ -54,6 +54,11 @@ eOperandType			OperandInt16::getType(void) const
 short int				OperandInt16::getValue(void) const
 {
 	return (this->_value);
+}
+
+size_t					OperandInt16::getZeroPrecision(void) const
+{
+	return (this->_zeroprecision);
 }
 
 IOperand const			*OperandInt16::operator+(IOperand const &rhs) const

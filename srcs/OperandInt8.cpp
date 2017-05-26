@@ -6,13 +6,13 @@
 /*   By: cledant <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/03 11:55:23 by cledant           #+#    #+#             */
-/*   Updated: 2017/05/17 18:23:04 by cledant          ###   ########.fr       */
+/*   Updated: 2017/05/26 10:45:37 by cledant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "OperandInt8.hpp"
 
-OperandInt8::OperandInt8(void) : _value(0), _str_value("0"), _precision(0)
+OperandInt8::OperandInt8(void) : _value(0), _str_value("0"), _zeroprecision(0)
 {
 	this->_factory = new OperandFactory();
 }
@@ -22,7 +22,7 @@ OperandInt8::~OperandInt8(void)
 	delete this->_factory;
 }
 
-OperandInt8::OperandInt8(OperandInt8 const &src) : _value(src.getValue()), _str_value(src.toString()), _precision(src.getPrecision())
+OperandInt8::OperandInt8(OperandInt8 const &src) : _value(src.getValue()), _str_value(src.toString()), _zeroprecision(src.getZeroPrecision())
 {
 	this->_factory = new OperandFactory();
 }
@@ -31,11 +31,11 @@ OperandInt8			&OperandInt8::operator=(OperandInt8 const &rhs)
 {
 	this->_value = rhs.getValue();
 	this->_str_value = rhs.toString().c_str();
-	this->_precision = rhs.getPrecision();
+	this->_zeroprecision = rhs.getZeroPrecision();
 	return (*this);
 }
 
-OperandInt8::OperandInt8(char const value) : _value(value), _precision(0)
+OperandInt8::OperandInt8(char const value) : _value(value), _zeroprecision(0)
 {
 	this->_factory = new OperandFactory();
 	this->_str_value = std::to_string(static_cast<int>(value));
@@ -43,7 +43,7 @@ OperandInt8::OperandInt8(char const value) : _value(value), _precision(0)
 
 int						OperandInt8::getPrecision(void) const
 {
-	return (this->_precision);
+	return (static_cast<int>(this->getType()));
 }
 
 eOperandType			OperandInt8::getType(void) const
@@ -54,6 +54,11 @@ eOperandType			OperandInt8::getType(void) const
 char					OperandInt8::getValue(void) const
 {
 	return (this->_value);
+}
+
+size_t					OperandInt8::getZeroPrecision(void) const
+{
+	return (this->_zeroprecision);
 }
 
 IOperand const			*OperandInt8::operator+(IOperand const &rhs) const
