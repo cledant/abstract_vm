@@ -9,4 +9,4 @@ You may compile the executable `abstract_vm` by running `make`.
 
 ## Usage
 
-Run `./abstract_vm < file` or `./abstract_vm`.
+Run `./abstract_vm < file` or `./abstract_vm [file]` or `./abstract_vm`.
